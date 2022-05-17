@@ -2,7 +2,7 @@
 
 namespace Tgs.GameRecordSchedules.Client
 {
-    internal interface IGameRecordSchedulesGrpc
+    public interface IGameRecordSchedulesGrpc
     {
         public ValueTask<GameRecordScheduleAddReply> GameRecordScheduleAddAsync(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default);
 
