@@ -6,7 +6,7 @@ namespace Tgs.GameRecordSchedules.Client
     {
         public ValueTask<GameRecordScheduleAddReply> GameRecordScheduleAddAsync(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default);
 
-        public ValueTask<GameRecordScheduleGetReply> GameRecordScheduleGetAsync(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default);
+        public ValueTask<GameRecordScheduleReply?> GameRecordScheduleGetAsync(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default);
 
         public ValueTask<GameRecordScheduleUpdateReply> GameRecordScheduleUpdateAsync(GameRecordScheduleUpdateRequest request, CancellationToken cancellationToken = default);
     }

@@ -14,9 +14,10 @@ namespace Tgs.GameRecordSchedules.Client
         public async ValueTask<GameRecordScheduleAddReply> GameRecordScheduleAddAsync(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default)
             => await _client.GameRecordScheduleAddAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        public async ValueTask<GameRecordScheduleGetReply> GameRecordScheduleGetAsync(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default)
+        public async ValueTask<GameRecordScheduleReply?> GameRecordScheduleGetAsync(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default)
         {
-            return await _client.GameRecordScheduleGetAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
+            var reply = await _client.GameRecordScheduleGetAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return reply.Item;
         }
 
         public async ValueTask<GameRecordScheduleUpdateReply> GameRecordScheduleUpdateAsync(GameRecordScheduleUpdateRequest request, CancellationToken cancellationToken = default)
