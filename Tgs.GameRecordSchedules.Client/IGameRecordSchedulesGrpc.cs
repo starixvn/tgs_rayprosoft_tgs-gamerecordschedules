@@ -4,10 +4,10 @@ namespace Tgs.GameRecordSchedules.Client
 {
     internal interface IGameRecordSchedulesGrpc
     {
-        public ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleAdd(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default);
+        public ValueTask<GameRecordScheduleAddReply> GameRecordScheduleAddAsync(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default);
 
-        public ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleGet(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default);
+        public ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleGetAsync(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default);
 
-        public ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleUpdate(GameRecordScheduleUpdateRequest request, CancellationToken cancellationToken = default);
+        public ValueTask<GameRecordScheduleUpdateReply> GameRecordScheduleUpdateAsync(GameRecordScheduleUpdateRequest request, CancellationToken cancellationToken = default);
     }
 }

@@ -10,9 +10,9 @@ package gamerecordschedules;
 // The greeting service definition.
 service GameRecordSchedulesService {
   // Sends a greeting
-  rpc GameRecordScheduleAdd (GameRecordScheduleAddRequest) returns (GameRecordScheduleGetReply);
+  rpc GameRecordScheduleAdd (GameRecordScheduleAddRequest) returns (GameRecordScheduleAddReply);
   rpc GameRecordScheduleGet (GameRecordScheduleGetRequest) returns (GameRecordScheduleGetReply);
-  rpc GameRecordScheduleUpdate (GameRecordScheduleUpdateRequest) returns (GameRecordScheduleGetReply);
+  rpc GameRecordScheduleUpdate (GameRecordScheduleUpdateRequest) returns (GameRecordScheduleUpdateReply);
 }
 
 // The request message containing the user's name.
@@ -38,6 +38,10 @@ message GameRecordScheduleUpdateRequest {
 }
 
 // The response message containing the greetings.
+message GameRecordScheduleAddReply{
+	phoenix.protobuf.GuidValue game_record_schedule_id = 1; 
+}
+
 message GameRecordScheduleGetReply{
 	phoenix.protobuf.GuidValue game_record_schedule_id = 1;
 	phoenix.protobuf.GuidValue game_provider_id = 2;
@@ -51,9 +55,13 @@ message GameRecordScheduleGetReply{
     google.protobuf.Timestamp updated_on = 10; 
 }
 
+message GameRecordScheduleUpdateReply{
+	bool success = 1;
+}
+
 enum GameRecordScheduleStatus{
-    GAME_RECORD_SCHEDULE_STATUS_ENABLE = 0;
-    GAME_RECORD_SCHEDULE_STATUS_DISABLE = 1;
+	GAME_RECORD_SCHEDULE_STATUS_DISABLE = 0;
+    GAME_RECORD_SCHEDULE_STATUS_ENABLE = 1;
 }
 
 

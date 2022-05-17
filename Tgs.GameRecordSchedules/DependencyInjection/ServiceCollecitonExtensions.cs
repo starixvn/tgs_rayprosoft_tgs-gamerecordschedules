@@ -16,6 +16,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 .Configure(redisDBconfigure)
                 .Services
                 .AddSingleton<MongoDBConnectionManager>()
-                .AddSingleton<RedisConnectionManager>();
+                .AddSingleton<RedisConnectionManager>()
+                .AddSingleton<DiagnosticsInterceptorOptions>()
+                .AddSingleton<LoggingInterceptor>();
     }
 }

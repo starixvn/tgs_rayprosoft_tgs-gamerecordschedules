@@ -31,6 +31,7 @@ public static class ServiceCollectionExtensions
             })
             .AddInterceptor<LoggingInterceptor>()
             .Services
+            .AddSingleton<DiagnosticsInterceptorOptions>()
             .AddSingleton<LoggingInterceptor>()
             .AddTransient<IGameRecordSchedulesGrpc, GameRecordSchedulesGrpc>();
 }

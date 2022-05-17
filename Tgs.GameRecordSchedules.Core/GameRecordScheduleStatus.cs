@@ -2,7 +2,7 @@
 {
     public enum GameRecordScheduleStatus
     {
-        Enable = 0,
-        Disable = 1
+        Disable = 0,
+        Enable = 1,
     }
 }

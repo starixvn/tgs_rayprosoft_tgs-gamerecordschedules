@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
 
@@ -8,24 +7,36 @@ namespace Tgs.GameRecordSchedules.Client
     internal class LoggingInterceptor : Interceptor
     {
         private readonly ILogger<LoggingInterceptor> _logger;
+        private readonly DiagnosticsInterceptorOptions _options;
 
-        public LoggingInterceptor(ILogger<LoggingInterceptor> logger)
+        public LoggingInterceptor(
+            ILogger<LoggingInterceptor> logger,
+            DiagnosticsInterceptorOptions options)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
         public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(TRequest request, ClientInterceptorContext<TRequest, TResponse> context, AsyncUnaryCallContinuation<TRequest, TResponse> continuation)
         {
-            var stopwatch = Stopwatch.StartNew();
+            var methodType = context.Method.Type;
+            var method = context.Method.Name;
 
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            _logger.LogInformation("Timestamp:{timestamp} LogOn:{logOn}  MethodType:{methodType} Method:{method} Request:{request}", timestamp, DateTime.Now.ToString("o"), context.Method.Type, context.Method.Name, request);
+            using var activity = _options.InterceptorActivitySource.StartActivity($"{methodType}.{method}");
+            try
+            {
+                _logger.LogInformation("TraceId:{traceId} LogOn:{logOn}  MethodType:{methodType} Method:{method} Request:{request}", activity?.TraceId.ToString(), DateTime.Now.ToString("o"), methodType, method, request);
 
-            var response = continuation(request, context);
+                var response = continuation(request, context);
 
-            stopwatch.Stop();
-            _logger.LogInformation("Timestamp:{timestamp} LogOn:{logOn}  MethodType:{methodType} Method:{method} Spend:{spend:0.0000}ms Response:{response}", timestamp, DateTime.Now.ToString("o"), context.Method.Type, context.Method.Name, stopwatch.Elapsed.TotalMilliseconds, response);
-            return response;
+                _logger.LogInformation("TraceId:{traceId} LogOn:{logOn}  MethodType:{methodType} Method:{method} Spend:{spend:0.0000}ms Response:{response}", activity?.TraceId.ToString(), DateTime.Now.ToString("o"), methodType, method, activity?.Duration.TotalMilliseconds, response);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error thrown by {context.Method}.", method);
+                throw;
+            }
         }
     }
 }

@@ -11,17 +11,15 @@ namespace Tgs.GameRecordSchedules.Client
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
-        public async ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleAdd(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.GameRecordScheduleAddAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
-        }
+        public async ValueTask<GameRecordScheduleAddReply> GameRecordScheduleAddAsync(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default)
+            => await _client.GameRecordScheduleAddAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        public async ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleGet(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default)
+        public async ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleGetAsync(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default)
         {
             return await _client.GameRecordScheduleGetAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public async ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleUpdate(GameRecordScheduleUpdateRequest request, CancellationToken cancellationToken = default)
+        public async ValueTask<GameRecordScheduleUpdateReply> GameRecordScheduleUpdateAsync(GameRecordScheduleUpdateRequest request, CancellationToken cancellationToken = default)
         {
             return await _client.GameRecordScheduleUpdateAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
         }

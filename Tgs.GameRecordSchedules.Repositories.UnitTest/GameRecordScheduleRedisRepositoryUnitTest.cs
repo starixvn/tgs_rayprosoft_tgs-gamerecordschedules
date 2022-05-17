@@ -44,7 +44,7 @@ namespace Tgs.GameRecordSchedules.Repositories.UnitTest
                 BrandCode = data.BrandCode,
                 GameProviderAgentId = data.GameProviderAgentId,
                 CurrencyCode = data.CurrencyCode,
-                Status = (int)GameRecordScheduleStatus.Enable,
+                Status = GameRecordScheduleStatus.Enable,
                 Config = data.Config,
                 CreatedOn = DateTime.UtcNow,
                 UpdatedOn = DateTime.UtcNow
@@ -83,7 +83,7 @@ namespace Tgs.GameRecordSchedules.Repositories.UnitTest
                 BrandCode = "Default",
                 GameProviderAgentId = "72412",
                 CurrencyCode = "CNY",
-                Status = (int)GameRecordScheduleStatus.Enable,
+                Status = GameRecordScheduleStatus.Enable,
                 Config = JsonSerializer.Serialize(new { }),
                 CreatedOn = DateTime.UtcNow,
                 UpdatedOn = DateTime.UtcNow
@@ -161,7 +161,7 @@ namespace Tgs.GameRecordSchedules.Repositories.UnitTest
                 BrandCode = "Default",
                 GameProviderAgentId = "72412",
                 CurrencyCode = "CNY",
-                Status = (int)GameRecordScheduleStatus.Enable,
+                Status = GameRecordScheduleStatus.Enable,
                 Config = data.Config,
                 CreatedOn = DateTime.UtcNow,
                 UpdatedOn = DateTime.UtcNow
