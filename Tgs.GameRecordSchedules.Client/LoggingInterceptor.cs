@@ -25,10 +25,12 @@ namespace Tgs.GameRecordSchedules.Client
             using var activity = _options.InterceptorActivitySource.StartActivity($"{methodType}.{method}");
             try
             {
+                _ = activity?.Start();
                 _logger.LogInformation("TraceId:{traceId} LogOn:{logOn}  MethodType:{methodType} Method:{method} Request:{request}", activity?.TraceId.ToString(), DateTime.Now.ToString("o"), methodType, method, request);
 
                 var response = continuation(request, context);
 
+                activity?.Stop();
                 _logger.LogInformation("TraceId:{traceId} LogOn:{logOn}  MethodType:{methodType} Method:{method} Spend:{spend:0.0000}ms Response:{response}", activity?.TraceId.ToString(), DateTime.Now.ToString("o"), methodType, method, activity?.Duration.TotalMilliseconds, response);
                 return response;
             }
