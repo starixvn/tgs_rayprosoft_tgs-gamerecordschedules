@@ -1,0 +1,27 @@
+﻿using Tgs.GameRecordSchedules.Protos;
+
+namespace Tgs.GameRecordSchedules.Client
+{
+    internal class GameRecordSchedulesGrpc : IGameRecordSchedulesGrpc
+    {
+        private readonly GameRecordSchedulesService.GameRecordSchedulesServiceClient _client;
+
+        public GameRecordSchedulesGrpc(GameRecordSchedulesService.GameRecordSchedulesServiceClient client)
+        {
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+        }
+
+        public async ValueTask<GameRecordScheduleAddReply> GameRecordScheduleAddAsync(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default)
+            => await _client.GameRecordScheduleAddAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
+
+        public async ValueTask<GameRecordScheduleGetReply?> GameRecordScheduleGetAsync(GameRecordScheduleGetRequest request, CancellationToken cancellationToken = default)
+        {
+            return await _client.GameRecordScheduleGetAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
+
+        public async ValueTask<GameRecordScheduleUpdateReply> GameRecordScheduleUpdateAsync(GameRecordScheduleUpdateRequest request, CancellationToken cancellationToken = default)
+        {
+            return await _client.GameRecordScheduleUpdateAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
+    }
+}

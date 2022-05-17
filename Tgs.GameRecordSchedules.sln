@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules", "Tgs.GameRecordSchedules\Tgs.GameRecordSchedules.csproj", "{9146EA62-D2E5-4AEE-92C4-733C974B0B98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Core", "Tgs.GameRecordSchedules.Core\Tgs.GameRecordSchedules.Core.csproj", "{9EB8D526-7EB8-4F27-A264-6840AAEFDF5A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Repositories", "Tgs.GameRecordSchedules.Repositories\Tgs.GameRecordSchedules.Repositories.csproj", "{A526E287-3F1A-4A8B-B4C6-A4DA5BFEA885}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{69C7B418-5EA6-4F9D-B4DA-C0DA3E9935A7}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		CodeMaid.config = CodeMaid.config
+		NuGet.config = NuGet.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.GameRecordSchedules.Repositories.UnitTest", "Tgs.GameRecordSchedules.Repositories.UnitTest\Tgs.GameRecordSchedules.Repositories.UnitTest.csproj", "{6A5839B7-BB6E-421E-93D0-75A0453AC1F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.GameRecordSchedules.Client", "Tgs.GameRecordSchedules.Client\Tgs.GameRecordSchedules.Client.csproj", "{ADA26C71-1C9F-4249-B605-B20EA0724EA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.GameRecordSchedules.Core.UnitTest", "Tgs.GameRecordSchedules.Core.UnitTest\Tgs.GameRecordSchedules.Core.UnitTest.csproj", "{425A559A-E133-474D-86CF-5792AD008B65}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9146EA62-D2E5-4AEE-92C4-733C974B0B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9146EA62-D2E5-4AEE-92C4-733C974B0B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9146EA62-D2E5-4AEE-92C4-733C974B0B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9146EA62-D2E5-4AEE-92C4-733C974B0B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB8D526-7EB8-4F27-A264-6840AAEFDF5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB8D526-7EB8-4F27-A264-6840AAEFDF5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB8D526-7EB8-4F27-A264-6840AAEFDF5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB8D526-7EB8-4F27-A264-6840AAEFDF5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A526E287-3F1A-4A8B-B4C6-A4DA5BFEA885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A526E287-3F1A-4A8B-B4C6-A4DA5BFEA885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A526E287-3F1A-4A8B-B4C6-A4DA5BFEA885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A526E287-3F1A-4A8B-B4C6-A4DA5BFEA885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A5839B7-BB6E-421E-93D0-75A0453AC1F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A5839B7-BB6E-421E-93D0-75A0453AC1F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A5839B7-BB6E-421E-93D0-75A0453AC1F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A5839B7-BB6E-421E-93D0-75A0453AC1F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADA26C71-1C9F-4249-B605-B20EA0724EA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADA26C71-1C9F-4249-B605-B20EA0724EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADA26C71-1C9F-4249-B605-B20EA0724EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA26C71-1C9F-4249-B605-B20EA0724EA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{425A559A-E133-474D-86CF-5792AD008B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{425A559A-E133-474D-86CF-5792AD008B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{425A559A-E133-474D-86CF-5792AD008B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{425A559A-E133-474D-86CF-5792AD008B65}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01D026B9-F206-42D7-8F48-23D3A96C985B}
+	EndGlobalSection
+EndGlobal
