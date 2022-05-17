@@ -32,7 +32,7 @@ namespace Tgs.GameRecordSchedule.Services
             };
         }
 
-        public override async Task<GameRecordScheduleGetReply?> GameRecordScheduleGet(GameRecordScheduleGetRequest request, ServerCallContext context)
+        public override async Task<GameRecordScheduleGetReply> GameRecordScheduleGet(GameRecordScheduleGetRequest request, ServerCallContext context)
         {
             var response = await _mediator.Send(new GameRecordSchedules.Core.ApplicationServices.GameRecordScheduleGetGameProviderRequest()
             {
@@ -42,8 +42,10 @@ namespace Tgs.GameRecordSchedule.Services
                 CurrencyCode = request.CurrencyCode
             }).ConfigureAwait(false);
 
-            return response is not null ?
-                new GameRecordScheduleGetReply()
+            return new GameRecordScheduleGetReply()
+            {
+                Item = response == null ? null :
+                new GameRecordScheduleReply()
                 {
                     GameRecordScheduleId = response.GameRecordScheduleId,
                     GameProviderId = response.GameProviderId,
@@ -54,11 +56,12 @@ namespace Tgs.GameRecordSchedule.Services
                     Status = (GameRecordScheduleStatus)response.Status,
                     Config = response.Config,
                     CreatedOn = response.CreatedOn.ToTimestamp(),
-                    UpdatedOn = response.UpdatedOn.ToTimestamp(),
-                } : null;
+                    UpdatedOn = response.UpdatedOn.ToTimestamp()
+                }
+            };
         }
 
-        public override async Task<GameRecordScheduleUpdateReply?> GameRecordScheduleUpdate(GameRecordScheduleUpdateRequest request, ServerCallContext context)
+        public override async Task<GameRecordScheduleUpdateReply> GameRecordScheduleUpdate(GameRecordScheduleUpdateRequest request, ServerCallContext context)
         {
             _ = await _mediator.Send(new GameRecordSchedules.Core.ApplicationServices.GameRecordScheduleUpdateRequest()
             {

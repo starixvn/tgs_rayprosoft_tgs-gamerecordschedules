@@ -43,6 +43,14 @@ message GameRecordScheduleAddReply{
 }
 
 message GameRecordScheduleGetReply{
+	GameRecordScheduleReply item = 1;
+}
+
+message GameRecordScheduleUpdateReply{
+	bool success = 1;
+}
+
+message GameRecordScheduleReply{
 	phoenix.protobuf.GuidValue game_record_schedule_id = 1;
 	phoenix.protobuf.GuidValue game_provider_id = 2;
 	string game_provider_code = 3;
@@ -53,10 +61,6 @@ message GameRecordScheduleGetReply{
 	string config = 8;
     google.protobuf.Timestamp created_on = 9; 
     google.protobuf.Timestamp updated_on = 10; 
-}
-
-message GameRecordScheduleUpdateReply{
-	bool success = 1;
 }
 
 enum GameRecordScheduleStatus{
