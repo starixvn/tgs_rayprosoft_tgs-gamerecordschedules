@@ -8,9 +8,9 @@ namespace Tgs.GameRecordSchedules.Core
 
         public ValueTask<GameRecordScheduleGet?> GetAsync(Guid gameRecordScheduleId, CancellationToken cancellationToken = default);
 
-        public ValueTask<GameRecordScheduleGet?> GetAsync(string gameProviderCode, string brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default);
+        public ValueTask<GameRecordScheduleGet?> GetAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default);
 
-        public ValueTask<Guid?> GetGameRecordScheduleIdAsync(string gameProviderCode, string brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default);
+        public ValueTask<Guid?> GetGameRecordScheduleIdAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default);
 
         public ValueTask UpdateAsync(GameRecordScheduleUpdate data, CancellationToken cancellationToken = default);
     }

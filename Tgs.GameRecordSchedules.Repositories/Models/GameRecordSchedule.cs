@@ -14,12 +14,10 @@ namespace Tgs.GameRecordSchedules.Repositories.Models
         [BsonElement("game_provider_code")]
         public string GameProviderCode { get; init; } = default!;
 
-        [BsonIgnoreIfDefault]
         [BsonDefaultValue("")]
         [BsonElement("brand_code")]
         public string BrandCode { get; init; } = default!;
 
-        [BsonIgnoreIfDefault]
         [BsonDefaultValue("")]
         [BsonElement("game_provider_agent_id")]
         public string GameProviderAgentId { get; init; } = default!;

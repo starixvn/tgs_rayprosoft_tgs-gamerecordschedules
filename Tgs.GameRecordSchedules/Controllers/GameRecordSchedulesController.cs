@@ -31,7 +31,7 @@ namespace Tgs.GameRecordSchedules.Controllers
         [HttpGet("{gameProviderCode}")]
         public async ValueTask<GameRecordScheduleGetViewModel?> GetAsync(
             string gameProviderCode,
-            [FromQuery] string brandCode,
+            [FromQuery] string? brandCode,
             [FromQuery] string? gameProviderAgentId,
             [FromQuery] string? currencyCode
             )

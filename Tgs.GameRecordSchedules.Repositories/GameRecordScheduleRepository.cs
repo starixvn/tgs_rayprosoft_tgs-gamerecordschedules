@@ -73,7 +73,7 @@ namespace Tgs.GameRecordSchedules.Repositories
                 } : null;
         }
 
-        public async ValueTask<GameRecordScheduleGet?> GetAsync(string gameProviderCode, string brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
+        public async ValueTask<GameRecordScheduleGet?> GetAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
         {
             var gameRecordScheduleId = await GetGameRecordScheduleIdAsync(
                 gameProviderCode,
@@ -86,7 +86,7 @@ namespace Tgs.GameRecordSchedules.Repositories
             return gameRecordScheduleId.HasValue ? await GetAsync(gameRecordScheduleId.Value, cancellationToken).ConfigureAwait(false) : null;
         }
 
-        public async ValueTask<Guid?> GetGameRecordScheduleIdAsync(string gameProviderCode, string brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
+        public async ValueTask<Guid?> GetGameRecordScheduleIdAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
         {
             var collection = await GetCollectionAsync().ConfigureAwait(false);
             var builder = Builders<GameRecordSchedule>.Filter;
