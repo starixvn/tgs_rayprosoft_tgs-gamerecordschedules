@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+import "phoenix/protobuf/guid.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Tgs.GameRecordSchedules.Protos";
+
+package gamerecordschedules;
+
+// The greeting service definition.
+service GameRecordSchedulesService {
+  // Sends a greeting
+  rpc GameRecordScheduleAdd (GameRecordScheduleAddRequest) returns (GameRecordScheduleAddReply);
+  rpc GameRecordScheduleGet (GameRecordScheduleGetRequest) returns (GameRecordScheduleGetReply);
+  rpc GameRecordScheduleUpdate (GameRecordScheduleUpdateRequest) returns (GameRecordScheduleUpdateReply);
+}
+
+// The request message containing the user's name.
+message GameRecordScheduleAddRequest {
+	phoenix.protobuf.GuidValue game_provider_id = 1;
+	string game_provider_code = 2;
+	string brand_code = 3;
+	string game_provider_agent_id = 4;
+	string currency_code = 5;
+	string config = 6;
+}
+
+message GameRecordScheduleGetRequest {
+	string game_provider_code = 1;
+	string brand_code = 2;
+	string game_provider_agent_id = 3;
+	string currency_code = 4;
+}
+
+message GameRecordScheduleUpdateRequest {
+	phoenix.protobuf.GuidValue game_record_schedule_id = 1;
+	string config = 2;
+}
+
+// The response message containing the greetings.
+message GameRecordScheduleAddReply{
+	phoenix.protobuf.GuidValue game_record_schedule_id = 1; 
+}
+
+message GameRecordScheduleGetReply{
+	GameRecordScheduleReply item = 1;
+}
+
+message GameRecordScheduleUpdateReply{
+	bool success = 1;
+}
+
+message GameRecordScheduleReply{
+	phoenix.protobuf.GuidValue game_record_schedule_id = 1;
+	phoenix.protobuf.GuidValue game_provider_id = 2;
+	string game_provider_code = 3;
+	string brand_code = 4;
+	string game_provider_agent_id = 5;
+	string currency_code = 6;
+	GameRecordScheduleStatus status = 7;
+	string config = 8;
+    google.protobuf.Timestamp created_on = 9; 
+    google.protobuf.Timestamp updated_on = 10; 
+}
+
+enum GameRecordScheduleStatus{
+	GAME_RECORD_SCHEDULE_STATUS_DISABLE = 0;
+    GAME_RECORD_SCHEDULE_STATUS_ENABLE = 1;
+}
+
+
