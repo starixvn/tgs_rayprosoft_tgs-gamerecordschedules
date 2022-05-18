@@ -81,7 +81,11 @@ namespace Tgs.GameRecordSchedules.Repositories
 
         public async ValueTask<Guid?> GetGameRecordScheduleIdAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
         {
-            var key = string.Format(KeyGameRecordScheduleId, gameProviderCode, !string.IsNullOrEmpty(brandCode) ? brandCode : "brandcode", !string.IsNullOrEmpty(gameProviderAgentId) ? gameProviderAgentId : "gameprovideragentid", !string.IsNullOrEmpty(currencyCode) ? currencyCode : "currencycode");
+            var key = string.Format(KeyGameRecordScheduleId,
+                gameProviderCode,
+                !string.IsNullOrEmpty(brandCode) ? brandCode : "brandCode",
+                !string.IsNullOrEmpty(gameProviderAgentId) ? gameProviderAgentId : "gameProviderAgentId",
+                !string.IsNullOrEmpty(currencyCode) ? currencyCode : "currencyCode").ToLower();
 
             if (!await _database.KeyExistsAsync(key).ConfigureAwait(false))
             {
@@ -113,6 +117,6 @@ namespace Tgs.GameRecordSchedules.Repositories
         }
 
         private Task<bool> CacheDataAsync(string redisKey, string redisValue)
-                                            => _database.StringSetAsync(redisKey, redisValue, expiry: _expiry, when: When.Always);
+            => _database.StringSetAsync(redisKey, redisValue, expiry: _expiry, when: When.Always);
     }
 }
