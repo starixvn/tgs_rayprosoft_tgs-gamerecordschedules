@@ -66,7 +66,7 @@ namespace Tgs.GameRecordSchedules.Repositories
             return JsonSerializer.Deserialize<GameRecordScheduleGet>(await _database.StringGetAsync(key).ConfigureAwait(false));
         }
 
-        public async ValueTask<GameRecordScheduleGet?> GetAsync(string gameProviderCode, string brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
+        public async ValueTask<GameRecordScheduleGet?> GetAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
         {
             var gameRecordScheduleId = await GetGameRecordScheduleIdAsync(
                 gameProviderCode,
@@ -79,9 +79,9 @@ namespace Tgs.GameRecordSchedules.Repositories
             return gameRecordScheduleId.HasValue ? await GetAsync(gameRecordScheduleId.Value, cancellationToken).ConfigureAwait(false) : null;
         }
 
-        public async ValueTask<Guid?> GetGameRecordScheduleIdAsync(string gameProviderCode, string brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
+        public async ValueTask<Guid?> GetGameRecordScheduleIdAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
         {
-            var key = string.Format(KeyGameRecordScheduleId, gameProviderCode, brandCode, !string.IsNullOrEmpty(gameProviderAgentId) ? gameProviderAgentId : "agentid", !string.IsNullOrEmpty(currencyCode) ? currencyCode : "currencycode");
+            var key = string.Format(KeyGameRecordScheduleId, gameProviderCode, !string.IsNullOrEmpty(brandCode) ? brandCode : "brandcode", !string.IsNullOrEmpty(gameProviderAgentId) ? gameProviderAgentId : "gameprovideragentid", !string.IsNullOrEmpty(currencyCode) ? currencyCode : "currencycode");
 
             if (!await _database.KeyExistsAsync(key).ConfigureAwait(false))
             {
