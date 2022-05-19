@@ -5,7 +5,7 @@ using Tgs.GameRecordSchedules.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ServiceCollecitonExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddGameRecordScheduleRepositories(
        this IServiceCollection services,

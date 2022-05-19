@@ -4,7 +4,7 @@ using Tgs.GameRecordSchedules.Core;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ServiceCollecitonExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddGameRecordScheduleCore(
        this IServiceCollection services)

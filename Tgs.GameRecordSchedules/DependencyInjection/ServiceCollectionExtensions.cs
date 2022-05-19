@@ -2,7 +2,7 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ServiceCollecitonExtensions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddGameRecordSchedules(
             this IServiceCollection services,
