@@ -10,7 +10,7 @@
     <PackageReference Include="MongoDB.Bson" Version="2.15.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.15.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
-    <PackageReference Include="Tgs.SerialNumberGenerator" Version="0.0.1" />
+    <PackageReference Include="Tgs.SerialNumberGenerator" Version="0.0.3" />
   </ItemGroup>
 
   <ItemGroup>

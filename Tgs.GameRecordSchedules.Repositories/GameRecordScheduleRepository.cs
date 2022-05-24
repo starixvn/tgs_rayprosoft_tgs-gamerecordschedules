@@ -27,7 +27,7 @@ namespace Tgs.GameRecordSchedules.Repositories
         public async ValueTask<Guid> AddAsync(GameRecordScheduleAdd data, CancellationToken cancellationToken = default)
         {
             var collection = await GetCollectionAsync().ConfigureAwait(false);
-            var gameRecordScheduleId = await _serialNumberGenerator.GenerateAsync().ConfigureAwait(false);
+            var gameRecordScheduleId = await _serialNumberGenerator.GenerateAsync(cancellationToken).ConfigureAwait(false);
             var dateTime = _systemClock.CurrentTime.DateTime;
             var document = new GameRecordSchedule()
             {
