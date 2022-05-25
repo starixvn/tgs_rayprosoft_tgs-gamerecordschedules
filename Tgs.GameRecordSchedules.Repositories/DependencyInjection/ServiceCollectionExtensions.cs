@@ -14,5 +14,5 @@ public static class ServiceCollectionExtensions
         => services
         .AddSerialNumberGenerator()
         .AddTransient<IGameRecordSchedule>(sp => ActivatorUtilities.CreateInstance<GameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)))
-        .Decorate<IGameRecordSchedule>((innerRepository, sp) => ActivatorUtilities.CreateInstance<GameRecordScheduleRedisRepository>(sp, innerRepository, redisDatabaseResolver(sp), TimeSpan.FromHours(1)));
+        .Decorate<IGameRecordSchedule>((innerRepository, sp) => ActivatorUtilities.CreateInstance<GameRecordScheduleRedisRepository>(sp, innerRepository, redisDatabaseResolver(sp), TimeSpan.FromSeconds(30)));
 }
