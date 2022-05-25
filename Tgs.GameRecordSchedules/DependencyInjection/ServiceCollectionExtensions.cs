@@ -1,0 +1,23 @@
+﻿using Tgs.GameRecordSchedules;
+
+namespace Microsoft.Extensions.DependencyInjection
+{
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddGameRecordSchedules(
+            this IServiceCollection services,
+            Action<MongoDBOptions, IServiceProvider> mongoDBconfigure,
+            Action<RedisOptions, IServiceProvider> redisDBconfigure)
+            => services
+                .AddOptions<MongoDBOptions>()
+                .Configure(mongoDBconfigure)
+                .Services
+                .AddOptions<RedisOptions>()
+                .Configure(redisDBconfigure)
+                .Services
+                .AddSingleton<MongoDBConnectionManager>()
+                .AddSingleton<RedisConnectionManager>()
+                .AddSingleton<DiagnosticsInterceptorOptions>()
+                .AddSingleton<LoggingInterceptor>();
+    }
+}
