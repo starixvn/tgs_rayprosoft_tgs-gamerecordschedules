@@ -1,4 +1,6 @@
+using System.Net.Mime;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Instrumentation.AspNetCore;
@@ -31,7 +33,11 @@ builder.Logging
 
 builder.Services
     .AddRouting(options => options.LowercaseUrls = true)
-    .AddControllers()
+    .AddControllers(options =>
+    {
+        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
+        options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -41,9 +47,14 @@ builder.Services
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
 
 // Add services to the container.
+builder.Services.AddSingleton<DiagnosticsInterceptorOptions>();
+builder.Services.AddSingleton<LoggingInterceptor>();
 builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<LoggingInterceptor>();
+    //If true, detailed exception messages are returned to clients when an exception is thrown in a service method.
+    //The default is false.Setting EnableDetailedErrors to true can leak sensitive information.
+    options.EnableDetailedErrors = true;
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

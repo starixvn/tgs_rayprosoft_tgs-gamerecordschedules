@@ -11,8 +11,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddOptions<MongoDBOptions>()
                 .Configure(mongoDBconfigure)
                 .Services
-                .AddSingleton<MongoDBConnectionManager>()
-                .AddSingleton<DiagnosticsInterceptorOptions>()
-                .AddSingleton<LoggingInterceptor>();
+                .AddSingleton<MongoDBConnectionManager>();
     }
 }
