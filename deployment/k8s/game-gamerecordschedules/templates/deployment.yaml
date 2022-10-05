@@ -42,11 +42,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
-            - name: ConnectionStrings__Redis
-              valueFrom:
-                secretKeyRef:
-                  name: tgs-connections
-                  key: redis
             - name: ConnectionStrings__Mongo
               valueFrom:
                 secretKeyRef:
