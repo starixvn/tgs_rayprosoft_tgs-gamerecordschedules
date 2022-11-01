@@ -104,7 +104,7 @@ internal class GameRecordScheduleRepository : IGameRecordSchedule
 	public async ValueTask UpdateAsync(GameRecordScheduleUpdate data, CancellationToken cancellationToken = default)
 	{
 		var collection = await GetCollectionAsync().ConfigureAwait(false);
-		var dateTime = _systemClock.UtcNow;
+		var dateTime = _systemClock.UtcNow.DateTime;
 		var builder = Builders<GameRecordSchedule>.Filter;
 		var filter = builder.Eq(x => x.GameRecordScheduleId, data.GameRecordScheduleId);
 		var update = Builders<GameRecordSchedule>.Update
