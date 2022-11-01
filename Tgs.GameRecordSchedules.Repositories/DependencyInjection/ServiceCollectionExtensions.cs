@@ -2,15 +2,15 @@
 using Tgs.GameRecordSchedules.Core;
 using Tgs.GameRecordSchedules.Repositories;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddGameRecordScheduleRepositories(
-           this IServiceCollection services,
-           Func<IServiceProvider, IMongoDatabase> mongoDatabaseResolver)
-            => services
-            .AddSerialNumberGenerator()
-            .AddTransient<IGameRecordSchedule>(sp => ActivatorUtilities.CreateInstance<GameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)));
-    }
+	public static IServiceCollection AddGameRecordScheduleRepositories(
+	   this IServiceCollection services,
+	   Func<IServiceProvider, IMongoDatabase> mongoDatabaseResolver)
+		=> services
+		.AddSerialNumberGenerator()
+		.AddTransient<IGameRecordSchedule>(sp => ActivatorUtilities.CreateInstance<GameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)))
+		.AddTransient<ISabaGameRecordScheduleRepository>(sp => ActivatorUtilities.CreateInstance<SabaGameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)));
 }

@@ -1,8 +1,7 @@
-﻿namespace Tgs.GameRecordSchedules.Core
+﻿namespace Tgs.GameRecordSchedules.Core;
+
+public enum GameRecordScheduleStatus
 {
-    public enum GameRecordScheduleStatus
-    {
-        Disable = 0,
-        Enable = 1,
-    }
+	Disable = 0,
+	Enable = 1,
 }

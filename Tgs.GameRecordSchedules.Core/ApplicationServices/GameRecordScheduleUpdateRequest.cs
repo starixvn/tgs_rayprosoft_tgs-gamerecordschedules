@@ -1,11 +1,10 @@
 ﻿using MediatR;
 
-namespace Tgs.GameRecordSchedules.Core.ApplicationServices
-{
-    public record GameRecordScheduleUpdateRequest : IRequest
-    {
-        public Guid GameRecordScheduleId { get; set; }
+namespace Tgs.GameRecordSchedules.Core.ApplicationServices;
 
-        public string Config { get; set; } = default!;
-    }
+public record GameRecordScheduleUpdateRequest : IRequest
+{
+	public Guid GameRecordScheduleId { get; set; }
+
+	public string Config { get; set; } = default!;
 }

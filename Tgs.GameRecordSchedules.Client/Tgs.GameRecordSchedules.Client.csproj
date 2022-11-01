@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<Version>0.0.5</Version>
+		<Version>0.0.6</Version>
 		<Authors>Raypro</Authors>
 		<Description>Tgs GameRecordSchedules Client</Description>
 		<PackageProjectUrl>https://gitlab.com/rayprosoft/tgs-gamerecordschedules</PackageProjectUrl>
@@ -15,6 +15,12 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>Tgs GameRecordSchedules</PackageTags>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Protos\**" />
+	  <EmbeddedResource Remove="Protos\**" />
+	  <None Remove="Protos\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.48.0" />
@@ -28,13 +34,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Protos\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Protobuf Include="..\Tgs.GameRecordSchedules\Protos\gamerecordschedules.proto" GrpcServices="Client">
-			<Link>Protos\gamerecordschedules.proto</Link>
-		</Protobuf>
+	  <Protobuf Include="..\Tgs.GameRecordSchedules\Protos\gamerecordschedules.proto" GrpcServices="Client">
+	    <Link>gamerecordschedules.proto</Link>
+	  </Protobuf>
+	  <Protobuf Include="..\Tgs.GameRecordSchedules\Protos\sabagamerecordschedules.proto" GrpcServices="Client">
+	    <Link>sabagamerecordschedules.proto</Link>
+	  </Protobuf>
 	</ItemGroup>
 
 </Project>

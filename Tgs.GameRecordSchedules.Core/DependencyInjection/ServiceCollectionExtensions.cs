@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
 using MediatR;
-using Tgs.GameRecordSchedules.Core;
+using Microsoft.Extensions.Internal;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddGameRecordScheduleCore(
-           this IServiceCollection services)
-            => services
-            .AddMediatR(Assembly.GetExecutingAssembly())
-            .AddScoped<ISystemClock, SystemClock>();
-    }
+	public static IServiceCollection AddGameRecordScheduleCore(
+	   this IServiceCollection services)
+		=> services
+		.AddMediatR(Assembly.GetExecutingAssembly())
+		.AddSingleton<ISystemClock, SystemClock>();
 }
