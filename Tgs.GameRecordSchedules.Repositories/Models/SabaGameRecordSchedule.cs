@@ -5,6 +5,8 @@ namespace Tgs.GameRecordSchedules.Repositories.Models;
 
 public record SabaGameRecordSchedule
 {
+	[BsonId]
+	public Guid Id { get; init; } = default!;
 	[BsonElement("operator_id")]
 	public string OperatorId { get; init; } = default!;
 

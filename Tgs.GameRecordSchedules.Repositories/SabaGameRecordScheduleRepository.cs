@@ -4,19 +4,23 @@ using MongoDB.Driver;
 
 using Tgs.GameRecordSchedules.Core;
 using Tgs.GameRecordSchedules.Repositories.Models;
+using Tgs.SerialNumberGenerator;
 
 namespace Tgs.GameRecordSchedules.Repositories;
 
 internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleRepository
 {
 	private readonly IMongoDatabase _database;
+	private readonly ISerialNumberGenerator _serialNumberGenerator;
 	private readonly ISystemClock _systemClock;
 
 	public SabaGameRecordScheduleRepository(
 		IMongoDatabase database,
+		ISerialNumberGenerator serialNumberGenerator,
 		ISystemClock systemClock)
 	{
 		_database = database ?? throw new ArgumentNullException(nameof(database));
+		_serialNumberGenerator = serialNumberGenerator ?? throw new ArgumentNullException(nameof(serialNumberGenerator));
 		_systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
 	}
 
@@ -42,9 +46,11 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
 	public async ValueTask MergeAsync(string operatorId, long versionKey, CancellationToken cancellationToken = default)
 	{
 		var collection = await GetCollectionAsync().ConfigureAwait(false);
+		var id = await _serialNumberGenerator.GenerateAsync(cancellationToken).ConfigureAwait(false);
 		var dateTime = _systemClock.UtcNow.DateTime;
 		var filter = Builders<SabaGameRecordSchedule>.Filter.Eq(x => x.OperatorId, operatorId);
 		var update = Builders<SabaGameRecordSchedule>.Update
+			.Set(s => s.Id, id)
 			.Set(s => s.OperatorId, operatorId)
 			.Set(s => s.VersionKey, versionKey)
 			.Set(s => s.UpdatedOn, dateTime);
