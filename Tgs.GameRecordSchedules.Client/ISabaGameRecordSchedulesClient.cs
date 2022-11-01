@@ -1,6 +1,6 @@
 ﻿namespace Tgs.GameRecordSchedules.Client;
 
-internal interface ISabaGameRecordSchedulesClient
+public interface ISabaGameRecordSchedulesClient
 {
 	public ValueTask<long> GetAsync(string operatorId, CancellationToken cancellationToken = default);
 
