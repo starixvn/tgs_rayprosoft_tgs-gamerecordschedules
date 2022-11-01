@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
 using NSubstitute;
 using Tgs.GameRecordSchedules.Repositories.Models;
-using Tgs.SerialNumberGenerator;
 
 namespace Tgs.GameRecordSchedules.Repositories.UnitTest;
 
@@ -16,7 +15,6 @@ public class SabaGameRecordScheduleRepositoryUnitTest
 	public async Task Merge()
 	{
 		var fakerMongoDatabase = Substitute.For<IMongoDatabase>();
-		var fakerSerialNumberGenerator = Substitute.For<ISerialNumberGenerator>();
 		var fakerSystemClock = Substitute.For<ISystemClock>();
 
 		string operatorId = "tg";
@@ -24,12 +22,8 @@ public class SabaGameRecordScheduleRepositoryUnitTest
 		var dateTime = DateTimeOffset.UtcNow.DateTime;
 		_ = fakerSystemClock.UtcNow.Returns(dateTime);
 
-		var id = Guid.NewGuid();
-		_ = fakerSerialNumberGenerator.GenerateAsync().Returns(id);
-
 		var repository = new SabaGameRecordScheduleRepository(
 			fakerMongoDatabase,
-			fakerSerialNumberGenerator,
 			fakerSystemClock);
 
 		await repository
@@ -41,7 +35,6 @@ public class SabaGameRecordScheduleRepositoryUnitTest
 		var filter = Builders<SabaGameRecordSchedule>.Filter.Eq(x => x.OperatorId, operatorId);
 
 		var update = Builders<SabaGameRecordSchedule>.Update
-			.Set(s => s.Id, id)
 			.Set(s => s.OperatorId, operatorId)
 			.Set(s => s.VersionKey, versionKey)
 			.Set(s => s.UpdatedOn, dateTime);
@@ -63,14 +56,12 @@ public class SabaGameRecordScheduleRepositoryUnitTest
 	public async Task GetAsync()
 	{
 		var fakerMongoDatabase = Substitute.For<IMongoDatabase>();
-		var fakerSerialNumberGenerator = Substitute.For<ISerialNumberGenerator>();
 		var fakerSystemClock = Substitute.For<ISystemClock>();
 
 		string operatorId = "tg";
 
 		var repository = new SabaGameRecordScheduleRepository(
 			fakerMongoDatabase,
-			fakerSerialNumberGenerator,
 			fakerSystemClock);
 
 		_ = await repository.GetAsync(operatorId).ConfigureAwait(false);
