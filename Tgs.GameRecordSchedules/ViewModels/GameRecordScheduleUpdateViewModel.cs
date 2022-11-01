@@ -1,7 +1,6 @@
-﻿namespace Tgs.GameRecordSchedules.ViewModels
+﻿namespace Tgs.GameRecordSchedules.ViewModels;
+
+public record GameRecordScheduleUpdateViewModel
 {
-    public record GameRecordScheduleUpdateViewModel
-    {
-        public string Config { get; set; } = default!;
-    }
+	public string Config { get; set; } = default!;
 }

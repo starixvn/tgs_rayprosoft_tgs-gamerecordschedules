@@ -16,11 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.GameRecordSchedules.Repositories.UnitTest", "Tgs.GameRecordSchedules.Repositories.UnitTest\Tgs.GameRecordSchedules.Repositories.UnitTest.csproj", "{6A5839B7-BB6E-421E-93D0-75A0453AC1F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Repositories.UnitTest", "Tgs.GameRecordSchedules.Repositories.UnitTest\Tgs.GameRecordSchedules.Repositories.UnitTest.csproj", "{6A5839B7-BB6E-421E-93D0-75A0453AC1F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.GameRecordSchedules.Client", "Tgs.GameRecordSchedules.Client\Tgs.GameRecordSchedules.Client.csproj", "{ADA26C71-1C9F-4249-B605-B20EA0724EA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Client", "Tgs.GameRecordSchedules.Client\Tgs.GameRecordSchedules.Client.csproj", "{ADA26C71-1C9F-4249-B605-B20EA0724EA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.GameRecordSchedules.Core.UnitTest", "Tgs.GameRecordSchedules.Core.UnitTest\Tgs.GameRecordSchedules.Core.UnitTest.csproj", "{425A559A-E133-474D-86CF-5792AD008B65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Core.UnitTest", "Tgs.GameRecordSchedules.Core.UnitTest\Tgs.GameRecordSchedules.Core.UnitTest.csproj", "{425A559A-E133-474D-86CF-5792AD008B65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

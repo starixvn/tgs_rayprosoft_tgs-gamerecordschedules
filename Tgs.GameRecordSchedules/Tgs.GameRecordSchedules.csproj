@@ -13,7 +13,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Protos\sabagamerecordschedules.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Protobuf Include="Protos\gamerecordschedules.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\sabagamerecordschedules.proto" GrpcServices="Server" />
 	</ItemGroup>
 
 	<ItemGroup>
