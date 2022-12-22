@@ -6,11 +6,12 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddGameRecordScheduleRepositories(
-	   this IServiceCollection services,
-	   Func<IServiceProvider, IMongoDatabase> mongoDatabaseResolver)
-		=> services
-		.AddSerialNumberGenerator()
-		.AddTransient<IGameRecordSchedule>(sp => ActivatorUtilities.CreateInstance<GameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)))
-		.AddTransient<ISabaGameRecordScheduleRepository>(sp => ActivatorUtilities.CreateInstance<SabaGameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)));
+    public static IServiceCollection AddGameRecordScheduleRepositories(
+       this IServiceCollection services,
+       Func<IServiceProvider, IMongoDatabase> mongoDatabaseResolver)
+        => services
+        .AddSerialNumberGenerator()
+        .AddSingleton<ISystemClock, SystemClock>()
+        .AddTransient<IGameRecordSchedule>(sp => ActivatorUtilities.CreateInstance<GameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)))
+        .AddTransient<ISabaGameRecordScheduleRepository>(sp => ActivatorUtilities.CreateInstance<SabaGameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)));
 }

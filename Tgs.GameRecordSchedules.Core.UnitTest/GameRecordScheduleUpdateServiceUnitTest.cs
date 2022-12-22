@@ -11,26 +11,26 @@ namespace Tgs.GameRecordSchedules.Core.UnitTest;
 [TestClass]
 public class GameRecordScheduleUpdateServiceUnitTest
 {
-	[TestMethod]
-	public async Task Normal_Process()
-	{
-		var fakerGameRecordSchedule = Substitute.For<IGameRecordSchedule>();
+    [TestMethod]
+    public async Task Normal_Process()
+    {
+        var fakerGameRecordSchedule = Substitute.For<IGameRecordSchedule>();
 
-		var gameRecordScheduleId = Guid.NewGuid();
+        var gameRecordScheduleId = Guid.NewGuid();
 
-		var data = new GameRecordScheduleUpdateRequest()
-		{
-			GameRecordScheduleId = gameRecordScheduleId,
-			Config = JsonSerializer.Serialize(new { })
-		};
+        var data = new GameRecordScheduleUpdateRequest()
+        {
+            GameRecordScheduleId = gameRecordScheduleId,
+            Config = JsonSerializer.Serialize(new { })
+        };
 
-		var service = new GameRecordScheduleUpdateService(fakerGameRecordSchedule);
+        var service = new GameRecordScheduleUpdateService(fakerGameRecordSchedule);
 
-		_ = await service.Handle(data, default).ConfigureAwait(false);
+        _ = await service.Handle(data, default).ConfigureAwait(false);
 
-		await fakerGameRecordSchedule
-			.Received(1)
-			.UpdateAsync(
-			Arg.Any<GameRecordScheduleUpdate>()).ConfigureAwait(false);
-	}
+        await fakerGameRecordSchedule
+            .Received(1)
+            .UpdateAsync(
+            Arg.Any<GameRecordScheduleUpdate>()).ConfigureAwait(false);
+    }
 }

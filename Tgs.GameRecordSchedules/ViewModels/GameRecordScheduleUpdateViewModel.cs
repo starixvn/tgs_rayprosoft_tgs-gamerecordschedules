@@ -2,5 +2,5 @@
 
 public record GameRecordScheduleUpdateViewModel
 {
-	public string Config { get; set; } = default!;
+    public string Config { get; set; } = default!;
 }
