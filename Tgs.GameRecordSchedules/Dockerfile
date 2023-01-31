@@ -10,8 +10,8 @@ ARG BuildConfiguration=Release
 WORKDIR /src
 COPY ["nuget.config", "."]
 COPY ["Tgs.GameRecordSchedules/Tgs.GameRecordSchedules.csproj", "Tgs.GameRecordSchedules/"]
-COPY ["Tgs.GameRecordSchedules.Repositories/Tgs.GameRecordSchedules.Repositories.csproj", "Tgs.GameRecordSchedules.Repositories/"]
 COPY ["Tgs.GameRecordSchedules.Core/Tgs.GameRecordSchedules.Core.csproj", "Tgs.GameRecordSchedules.Core/"]
+COPY ["Tgs.GameRecordSchedules.Repositories/Tgs.GameRecordSchedules.Repositories.csproj", "Tgs.GameRecordSchedules.Repositories/"]
 RUN dotnet restore "Tgs.GameRecordSchedules/Tgs.GameRecordSchedules.csproj"
 COPY . .
 WORKDIR "/src/Tgs.GameRecordSchedules"
@@ -19,7 +19,7 @@ RUN dotnet build "Tgs.GameRecordSchedules.csproj" -c $BuildConfiguration -o /app
 
 FROM build AS publish
 ARG BuildConfiguration
-RUN dotnet publish "Tgs.GameRecordSchedules.csproj" -c $BuildConfiguration -o /app/publish
+RUN dotnet publish "Tgs.GameRecordSchedules.csproj" -c $BuildConfiguration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
