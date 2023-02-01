@@ -57,8 +57,11 @@ spec:
               readOnly: true
               subPath: rds-combined-ca-bundle.pem
           ports:
-            - name: http
+            - name: grpc
               containerPort:  {{ .Values.servicegrpc.port }}
+              protocol: TCP
+            - name: http
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
