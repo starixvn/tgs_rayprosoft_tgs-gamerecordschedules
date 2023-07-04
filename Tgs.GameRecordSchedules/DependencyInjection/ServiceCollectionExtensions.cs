@@ -8,8 +8,11 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         Action<MongoDBOptions, IServiceProvider> mongoDBconfigure)
         => services
-            .AddOptions<MongoDBOptions>()
-            .Configure(mongoDBconfigure)
-            .Services
-            .AddSingleton<MongoDBConnectionManager>();
+        .AddOptions<MongoDBOptions>()
+        .Configure(mongoDBconfigure)
+        .Services
+        .AddSingleton<MongoDBConnectionManager>()
+        .AddGameRecordScheduleCore()
+        .AddGameRecordScheduleRepositories(
+            (sp) => sp.GetRequiredService<MongoDBConnectionManager>().Database);
 }

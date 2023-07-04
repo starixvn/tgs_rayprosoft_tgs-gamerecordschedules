@@ -3,7 +3,7 @@ using Grpc.Core;
 using MediatR;
 using Tgs.GameRecordSchedules.Protos;
 
-namespace Tgs.GameRecordSchedule.Services;
+namespace Tgs.GameRecordSchedules.GrpcServices;
 
 public class GameRecordSchedulesGrpcService : GameRecordSchedulesService.GameRecordSchedulesServiceBase
 {

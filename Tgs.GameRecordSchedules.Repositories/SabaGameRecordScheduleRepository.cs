@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 using Tgs.GameRecordSchedules.Core;
 using Tgs.GameRecordSchedules.Repositories.Models;
@@ -19,9 +18,11 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
         _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
     }
 
-    public async ValueTask<long> GetAsync(string operatorId, CancellationToken cancellationToken = default)
+    public async ValueTask<long> GetAsync(
+        string operatorId,
+        CancellationToken cancellationToken = default)
     {
-        var collection = await GetCollectionAsync().ConfigureAwait(false);
+        var collection = GetCollection();
         var builder = Builders<SabaGameRecordSchedule>.Filter;
         var filter = builder.Eq(x => x.OperatorId, operatorId);
 
@@ -38,10 +39,28 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
             : result.VersionKey;
     }
 
-    public async ValueTask MergeAsync(string operatorId, long versionKey, CancellationToken cancellationToken = default)
+    public async ValueTask InitDBAsync(CancellationToken cancellationToken = default)
     {
-        var collection = await GetCollectionAsync().ConfigureAwait(false);
-        var dateTime = _systemClock.UtcNow.DateTime;
+        var collection = GetCollection();
+
+        await OperatorIdIndexAsync(
+            collection: collection,
+            cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+
+        await UpdatedOn_IndexAsync(
+            collection: collection,
+            cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    public async ValueTask MergeAsync(
+            string operatorId,
+        long versionKey,
+        CancellationToken cancellationToken = default)
+    {
+        var collection = GetCollection();
+        var dateTime = _systemClock.CurrentTime.DateTime;
         var filter = Builders<SabaGameRecordSchedule>.Filter.Eq(x => x.OperatorId, operatorId);
         var update = Builders<SabaGameRecordSchedule>.Update
             .Set(s => s.OperatorId, operatorId)
@@ -61,7 +80,9 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
              .ConfigureAwait(false);
     }
 
-    private static Task OperatorIdIndexAsync(IMongoCollection<SabaGameRecordSchedule> collection)
+    private static Task OperatorIdIndexAsync(
+        IMongoCollection<SabaGameRecordSchedule> collection,
+        CancellationToken cancellationToken = default)
     {
         var index = Builders<SabaGameRecordSchedule>.IndexKeys
            .Ascending(m => m.OperatorId);
@@ -72,25 +93,31 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
         };
         var createIndexModel = new CreateIndexModel<SabaGameRecordSchedule>(index, createIndexOptions);
 
-        return collection.Indexes.CreateOneAsync(createIndexModel);
+        return collection.Indexes
+            .CreateOneAsync(
+            model: createIndexModel,
+            cancellationToken: cancellationToken);
     }
 
-    private async ValueTask<bool> CollectionExistsAsync(string collectionName)
-        => await (await _database.ListCollectionsAsync(new ListCollectionsOptions { Filter = new BsonDocument("name", collectionName) }).ConfigureAwait(false)).AnyAsync().ConfigureAwait(false);
-
-    private async Task<IMongoCollection<SabaGameRecordSchedule>> GetCollectionAsync()
+    private static Task UpdatedOn_IndexAsync(
+        IMongoCollection<SabaGameRecordSchedule> collection,
+        CancellationToken cancellationToken = default)
     {
-        var collection = _database.GetCollection<SabaGameRecordSchedule>($"saba_game_record_schedules".ToLower());
-        if (collection.CollectionNamespace == null)
-        {
-            return collection;
-        }
+        var index = Builders<SabaGameRecordSchedule>.IndexKeys
+            .Ascending(m => m.UpdatedOn);
 
-        if (!await CollectionExistsAsync(collection.CollectionNamespace.CollectionName.ToString()).ConfigureAwait(false))
+        var createIndexOptions = new CreateIndexOptions
         {
-            await OperatorIdIndexAsync(collection).ConfigureAwait(false);
-        }
+            ExpireAfter = TimeSpan.FromDays(3),
+            Name = $"ix_updated_on"
+        };
+        var createIndexModel = new CreateIndexModel<SabaGameRecordSchedule>(index, createIndexOptions);
 
-        return collection;
+        return collection.Indexes.CreateOneAsync(
+            model: createIndexModel,
+            cancellationToken: cancellationToken);
     }
+
+    private IMongoCollection<SabaGameRecordSchedule> GetCollection()
+            => _database.GetCollection<SabaGameRecordSchedule>($"saba_game_record_schedules".ToLower());
 }

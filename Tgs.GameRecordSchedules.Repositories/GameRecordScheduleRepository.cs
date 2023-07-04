@@ -1,14 +1,14 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 using Tgs.GameRecordSchedules.Core;
 using Tgs.GameRecordSchedules.Core.Models;
 using Tgs.GameRecordSchedules.Repositories.Models;
 using Tgs.SerialNumberGenerator;
+using ISystemClock = Tgs.GameRecordSchedules.Core.ISystemClock;
 
 namespace Tgs.GameRecordSchedules.Repositories;
 
-internal class GameRecordScheduleRepository : IGameRecordSchedule
+internal class GameRecordScheduleRepository : IGameRecordScheduleRepository
 {
     private readonly IMongoDatabase _database;
     private readonly ISerialNumberGenerator _serialNumberGenerator;
@@ -24,11 +24,13 @@ internal class GameRecordScheduleRepository : IGameRecordSchedule
         _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
     }
 
-    public async ValueTask<Guid> AddAsync(GameRecordScheduleAdd data, CancellationToken cancellationToken = default)
+    public async ValueTask<Guid> AddAsync(
+        GameRecordScheduleAdd data,
+        CancellationToken cancellationToken = default)
     {
-        var collection = await GetCollectionAsync().ConfigureAwait(false);
+        var collection = GetCollection();
         var gameRecordScheduleId = await _serialNumberGenerator.GenerateAsync(cancellationToken).ConfigureAwait(false);
-        var dateTime = _systemClock.UtcNow.DateTime;
+        var dateTime = _systemClock.CurrentTime.DateTime;
         var document = new GameRecordSchedule()
         {
             GameRecordScheduleId = gameRecordScheduleId,
@@ -47,9 +49,11 @@ internal class GameRecordScheduleRepository : IGameRecordSchedule
         return gameRecordScheduleId;
     }
 
-    public async ValueTask<GameRecordScheduleGet?> GetAsync(Guid gameRecordScheduleId, CancellationToken cancellationToken = default)
+    public async ValueTask<GameRecordScheduleGet?> GetAsync(
+        Guid gameRecordScheduleId,
+        CancellationToken cancellationToken = default)
     {
-        var collection = await GetCollectionAsync().ConfigureAwait(false);
+        var collection = GetCollection();
         var builder = Builders<GameRecordSchedule>.Filter;
         var filter = builder.Eq(x => x.GameRecordScheduleId, gameRecordScheduleId);
 
@@ -73,7 +77,12 @@ internal class GameRecordScheduleRepository : IGameRecordSchedule
             } : null;
     }
 
-    public async ValueTask<GameRecordScheduleGet?> GetAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
+    public async ValueTask<GameRecordScheduleGet?> GetAsync(
+        string gameProviderCode,
+        string? brandCode,
+        string? gameProviderAgentId,
+        string? currencyCode,
+        CancellationToken cancellationToken = default)
     {
         var gameRecordScheduleId = await GetGameRecordScheduleIdAsync(
             gameProviderCode,
@@ -86,9 +95,14 @@ internal class GameRecordScheduleRepository : IGameRecordSchedule
         return gameRecordScheduleId.HasValue ? await GetAsync(gameRecordScheduleId.Value, cancellationToken).ConfigureAwait(false) : null;
     }
 
-    public async ValueTask<Guid?> GetGameRecordScheduleIdAsync(string gameProviderCode, string? brandCode, string? gameProviderAgentId, string? currencyCode, CancellationToken cancellationToken = default)
+    public async ValueTask<Guid?> GetGameRecordScheduleIdAsync(
+        string gameProviderCode,
+        string? brandCode,
+        string? gameProviderAgentId,
+        string? currencyCode,
+        CancellationToken cancellationToken = default)
     {
-        var collection = await GetCollectionAsync().ConfigureAwait(false);
+        var collection = GetCollection();
         var builder = Builders<GameRecordSchedule>.Filter;
         var filter = builder.Eq(x => x.GameProviderCode, gameProviderCode) &
             builder.Eq(x => x.BrandCode, brandCode) &
@@ -100,10 +114,28 @@ internal class GameRecordScheduleRepository : IGameRecordSchedule
             .ConfigureAwait(false)).FirstOrDefault(cancellationToken: cancellationToken)?.GameRecordScheduleId;
     }
 
-    public async ValueTask UpdateAsync(GameRecordScheduleUpdate data, CancellationToken cancellationToken = default)
+    public async ValueTask InitDBAsync(
+        CancellationToken cancellationToken = default)
     {
-        var collection = await GetCollectionAsync().ConfigureAwait(false);
-        var dateTime = _systemClock.UtcNow.DateTime;
+        var collection = GetCollection();
+
+        await GameProviderCodeIndexAsync(
+            collection: collection,
+            cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+
+        await UpdatedOn_IndexAsync(
+            collection: collection,
+            cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    public async ValueTask UpdateAsync(
+        GameRecordScheduleUpdate data,
+        CancellationToken cancellationToken = default)
+    {
+        var collection = GetCollection();
+        var dateTime = _systemClock.CurrentTime.DateTime;
         var builder = Builders<GameRecordSchedule>.Filter;
         var filter = builder.Eq(x => x.GameRecordScheduleId, data.GameRecordScheduleId);
         var update = Builders<GameRecordSchedule>.Update
@@ -114,7 +146,9 @@ internal class GameRecordScheduleRepository : IGameRecordSchedule
              .ConfigureAwait(false);
     }
 
-    private static Task GameProviderCodeIndexAsync(IMongoCollection<GameRecordSchedule> collection)
+    private static Task GameProviderCodeIndexAsync(
+        IMongoCollection<GameRecordSchedule> collection,
+        CancellationToken cancellationToken)
     {
         var index = Builders<GameRecordSchedule>.IndexKeys
            .Ascending(m => m.GameProviderCode)
@@ -128,25 +162,30 @@ internal class GameRecordScheduleRepository : IGameRecordSchedule
         };
         var createIndexModel = new CreateIndexModel<GameRecordSchedule>(index, createIndexOptions);
 
-        return collection.Indexes.CreateOneAsync(createIndexModel);
+        return collection.Indexes.CreateOneAsync(
+            model: createIndexModel,
+            cancellationToken: cancellationToken);
     }
 
-    private async ValueTask<bool> CollectionExistsAsync(string collectionName)
-        => await (await _database.ListCollectionsAsync(new ListCollectionsOptions { Filter = new BsonDocument("name", collectionName) }).ConfigureAwait(false)).AnyAsync().ConfigureAwait(false);
-
-    private async Task<IMongoCollection<GameRecordSchedule>> GetCollectionAsync()
+    private static Task UpdatedOn_IndexAsync(
+        IMongoCollection<GameRecordSchedule> collection,
+        CancellationToken cancellationToken = default)
     {
-        var collection = _database.GetCollection<GameRecordSchedule>($"game_record_schedules");
-        if (collection.CollectionNamespace == null)
-        {
-            return collection;
-        }
+        var index = Builders<GameRecordSchedule>.IndexKeys
+            .Ascending(m => m.UpdatedOn);
 
-        if (!await CollectionExistsAsync(collection.CollectionNamespace.CollectionName.ToString()).ConfigureAwait(false))
+        var createIndexOptions = new CreateIndexOptions
         {
-            await GameProviderCodeIndexAsync(collection).ConfigureAwait(false);
-        }
+            ExpireAfter = TimeSpan.FromDays(3),
+            Name = $"ix_updated_on"
+        };
+        var createIndexModel = new CreateIndexModel<GameRecordSchedule>(index, createIndexOptions);
 
-        return collection;
+        return collection.Indexes.CreateOneAsync(
+            model: createIndexModel,
+            cancellationToken: cancellationToken);
     }
+
+    private IMongoCollection<GameRecordSchedule> GetCollection()
+            => _database.GetCollection<GameRecordSchedule>($"game_record_schedules");
 }

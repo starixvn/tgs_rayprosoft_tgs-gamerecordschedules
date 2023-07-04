@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
 using NSubstitute;
 using Tgs.GameRecordSchedules.Core;
 using Tgs.GameRecordSchedules.Core.Models;
 using Tgs.GameRecordSchedules.Repositories.Models;
 using Tgs.SerialNumberGenerator;
+using ISystemClock = Tgs.GameRecordSchedules.Core.ISystemClock;
 
 namespace Tgs.GameRecordSchedules.Repositories.UnitTest;
 
-[TestClass]
 public class GameRecordScheduleRepositoryUnitTest
 {
-    [TestMethod]
+    [Fact]
     public async Task Add()
     {
         var fakerMongoDatabase = Substitute.For<IMongoDatabase>();
@@ -35,7 +34,7 @@ public class GameRecordScheduleRepositoryUnitTest
         _ = fakerSerialNumberGenerator.GenerateAsync().Returns(gameRecordScheduleId);
 
         var dateTime = DateTimeOffset.UtcNow.DateTime;
-        _ = fakerSystemClock.UtcNow.Returns(dateTime);
+        _ = fakerSystemClock.CurrentTime.Returns(dateTime);
 
         var repository = new GameRecordScheduleRepository(
             fakerMongoDatabase,
@@ -63,7 +62,7 @@ public class GameRecordScheduleRepositoryUnitTest
               .InsertOneAsync(Arg.Is(document));
     }
 
-    [TestMethod]
+    [Fact]
     public async Task GetAsync()
     {
         var fakerMongoDatabase = Substitute.For<IMongoDatabase>();
@@ -87,7 +86,7 @@ public class GameRecordScheduleRepositoryUnitTest
               .FindAsync(filter);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task GetGameRecordScheduleIdAsync()
     {
         var fakerMongoDatabase = Substitute.For<IMongoDatabase>();
@@ -117,7 +116,7 @@ public class GameRecordScheduleRepositoryUnitTest
               .FindAsync(filter);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task UpdateAsync()
     {
         var fakerMongoDatabase = Substitute.For<IMongoDatabase>();

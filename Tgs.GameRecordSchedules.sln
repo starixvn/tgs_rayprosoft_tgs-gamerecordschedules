@@ -9,13 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Repositories", "Tgs.GameRecordSchedules.Repositories\Tgs.GameRecordSchedules.Repositories.csproj", "{A526E287-3F1A-4A8B-B4C6-A4DA5BFEA885}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{69C7B418-5EA6-4F9D-B4DA-C0DA3E9935A7}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		CodeMaid.config = CodeMaid.config
-		nuget.config = nuget.config
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Repositories.UnitTest", "Tgs.GameRecordSchedules.Repositories.UnitTest\Tgs.GameRecordSchedules.Repositories.UnitTest.csproj", "{6A5839B7-BB6E-421E-93D0-75A0453AC1F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.GameRecordSchedules.Client", "Tgs.GameRecordSchedules.Client\Tgs.GameRecordSchedules.Client.csproj", "{ADA26C71-1C9F-4249-B605-B20EA0724EA5}"

@@ -12,6 +12,6 @@ public static class ServiceCollectionExtensions
         => services
         .AddSerialNumberGenerator()
         .AddSingleton<ISystemClock, SystemClock>()
-        .AddTransient<IGameRecordSchedule>(sp => ActivatorUtilities.CreateInstance<GameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)))
+        .AddTransient<IGameRecordScheduleRepository>(sp => ActivatorUtilities.CreateInstance<GameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)))
         .AddTransient<ISabaGameRecordScheduleRepository>(sp => ActivatorUtilities.CreateInstance<SabaGameRecordScheduleRepository>(sp, mongoDatabaseResolver(sp)));
 }

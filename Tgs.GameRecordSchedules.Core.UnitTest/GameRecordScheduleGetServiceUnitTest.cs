@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Tgs.GameRecordSchedules.Core.ApplicationServices;
 using Tgs.GameRecordSchedules.Core.Models;
 
 namespace Tgs.GameRecordSchedules.Core.UnitTest;
 
-[TestClass]
 public class GameRecordScheduleGetServiceUnitTest
 {
-    [TestMethod]
+    [Fact]
     public async Task Normal_Process()
     {
-        var fakerGameRecordSchedule = Substitute.For<IGameRecordSchedule>();
+        var fakerRepository = Substitute.For<IGameRecordScheduleRepository>();
 
         var gameRecordScheduleId = Guid.NewGuid();
         var request = new GameRecordScheduleGetRequest()
@@ -35,14 +33,14 @@ public class GameRecordScheduleGetServiceUnitTest
             UpdatedOn = DateTime.UtcNow
         };
 
-        _ = fakerGameRecordSchedule.GetAsync(
+        _ = fakerRepository.GetAsync(
             Arg.Is(gameRecordScheduleId)).Returns(gameRecordSchedule);
 
-        var service = new GameRecordScheduleGetService(fakerGameRecordSchedule);
+        var service = new GameRecordScheduleGetService(fakerRepository);
 
         var actual = await service.Handle(request, default).ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
-        Assert.AreEqual(gameRecordScheduleId, actual.GameRecordScheduleId);
+        Assert.NotNull(actual);
+        Assert.Equal(gameRecordScheduleId, actual.GameRecordScheduleId);
     }
 }

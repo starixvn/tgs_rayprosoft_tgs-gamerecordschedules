@@ -4,9 +4,9 @@ namespace Tgs.GameRecordSchedules.Core.ApplicationServices;
 
 internal class GameRecordScheduleGetService : IRequestHandler<GameRecordScheduleGetRequest, GameRecordScheduleResponse?>
 {
-    private readonly IGameRecordSchedule _gameRecordSchedule;
+    private readonly IGameRecordScheduleRepository _gameRecordSchedule;
 
-    public GameRecordScheduleGetService(IGameRecordSchedule gameRecordSchedule)
+    public GameRecordScheduleGetService(IGameRecordScheduleRepository gameRecordSchedule)
     {
         _gameRecordSchedule = gameRecordSchedule ?? throw new ArgumentNullException(nameof(gameRecordSchedule));
     }

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
 using NSubstitute;
+using Tgs.GameRecordSchedules.Core;
 using Tgs.GameRecordSchedules.Repositories.Models;
 
 namespace Tgs.GameRecordSchedules.Repositories.UnitTest;
 
-[TestClass]
 public class SabaGameRecordScheduleRepositoryUnitTest
 {
-    [TestMethod]
+    [Fact]
     public async Task GetAsync()
     {
         var fakerMongoDatabase = Substitute.For<IMongoDatabase>();
@@ -33,7 +32,7 @@ public class SabaGameRecordScheduleRepositoryUnitTest
             .ConfigureAwait(false);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Merge()
     {
         var fakerMongoDatabase = Substitute.For<IMongoDatabase>();
@@ -42,7 +41,7 @@ public class SabaGameRecordScheduleRepositoryUnitTest
         string operatorId = "tg";
         long versionKey = 1000000;
         var dateTime = DateTimeOffset.UtcNow.DateTime;
-        _ = fakerSystemClock.UtcNow.Returns(dateTime);
+        _ = fakerSystemClock.CurrentTime.Returns(dateTime);
 
         var repository = new SabaGameRecordScheduleRepository(
             fakerMongoDatabase,
