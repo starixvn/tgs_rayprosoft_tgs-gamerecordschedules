@@ -80,7 +80,7 @@ push-docker-image:
     untracked: true   
     policy: pull
   script:
-    - dotnet build "Tgs.GameRecordSchedules/Tgs.GameRecordSchedules.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:$Tag" --no-restore
+    - docker build  -t "$ImageName:$Tag" --build-arg [BuildConfiguration]=$BuildConfiguration -f "Tgs.GameRecordSchedules/Dockerfile" . --no-cache
     - docker push $ImageName:$Tag
 
 push-k8s-template:
