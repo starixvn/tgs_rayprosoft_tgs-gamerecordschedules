@@ -88,3 +88,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+restart:
+  enabled: false
+  serviceAccount: game-gamewagers-expire-restarter
+  annotations: {}
+  schedule: 0 0 * * *
