@@ -29,7 +29,7 @@ public class GameRecordScheduleAddServiceUnitTest
 
         var service = new GameRecordScheduleAddService(fakerRepository);
 
-        var actual = await service.Handle(data, default).ConfigureAwait(false);
+        var actual = await service.Handle(data, default);
 
         Assert.Equal(gameRecordScheduleId, actual);
     }

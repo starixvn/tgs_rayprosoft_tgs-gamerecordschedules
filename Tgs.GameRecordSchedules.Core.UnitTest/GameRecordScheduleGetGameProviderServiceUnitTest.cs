@@ -44,7 +44,7 @@ public class GameRecordScheduleGetGameProviderServiceUnitTest
 
         var service = new GameRecordScheduleGetGameProviderService(fakerRepository);
 
-        var actual = await service.Handle(request, default).ConfigureAwait(false);
+        var actual = await service.Handle(request, default);
 
         Assert.NotNull(actual);
         Assert.Equal(gameRecordScheduleId, actual.GameRecordScheduleId);

@@ -3,7 +3,7 @@ using Tgs.GameRecordSchedules.Core.Models;
 
 namespace Tgs.GameRecordSchedules.Core.ApplicationServices;
 
-internal class GameRecordScheduleUpdateService : IRequestHandler<GameRecordScheduleUpdateRequest>
+internal class GameRecordScheduleUpdateService : IRequestHandler<GameRecordScheduleUpdateRequest, Unit>
 {
     private readonly IGameRecordScheduleRepository _gameRecordSchedule;
 

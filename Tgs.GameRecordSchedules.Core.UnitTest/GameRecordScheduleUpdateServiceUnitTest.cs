@@ -24,11 +24,11 @@ public class GameRecordScheduleUpdateServiceUnitTest
 
         var service = new GameRecordScheduleUpdateService(fakerRepository);
 
-        _ = await service.Handle(data, default).ConfigureAwait(false);
+        _ = await service.Handle(data, default);
 
         await fakerRepository
             .Received(1)
             .UpdateAsync(
-            Arg.Any<GameRecordScheduleUpdate>()).ConfigureAwait(false);
+            source: Arg.Any<GameRecordScheduleUpdate>());
     }
 }

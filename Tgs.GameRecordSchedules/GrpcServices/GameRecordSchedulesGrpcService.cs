@@ -16,7 +16,7 @@ public class GameRecordSchedulesGrpcService : GameRecordSchedulesService.GameRec
 
     public override async Task<GameRecordScheduleAddReply> GameRecordScheduleAdd(GameRecordScheduleAddRequest request, ServerCallContext context)
     {
-        var gameRecordScheduleId = await _mediator.Send(new GameRecordSchedules.Core.ApplicationServices.GameRecordScheduleAddRequest()
+        var gameRecordScheduleId = await _mediator.Send(new Core.ApplicationServices.GameRecordScheduleAddRequest()
         {
             GameProviderId = request.GameProviderId,
             GameProviderCode = request.GameProviderCode,
@@ -34,7 +34,7 @@ public class GameRecordSchedulesGrpcService : GameRecordSchedulesService.GameRec
 
     public override async Task<GameRecordScheduleGetReply> GameRecordScheduleGet(GameRecordScheduleGetRequest request, ServerCallContext context)
     {
-        var response = await _mediator.Send(new GameRecordSchedules.Core.ApplicationServices.GameRecordScheduleGetGameProviderRequest()
+        var response = await _mediator.Send(new Core.ApplicationServices.GameRecordScheduleGetGameProviderRequest()
         {
             GameProviderCode = request.GameProviderCode.ToUpper(),
             BrandCode = request.BrandCode,
@@ -63,7 +63,7 @@ public class GameRecordSchedulesGrpcService : GameRecordSchedulesService.GameRec
 
     public override async Task<GameRecordScheduleUpdateReply> GameRecordScheduleUpdate(GameRecordScheduleUpdateRequest request, ServerCallContext context)
     {
-        _ = await _mediator.Send(new GameRecordSchedules.Core.ApplicationServices.GameRecordScheduleUpdateRequest()
+        _ = await _mediator.Send(new Core.ApplicationServices.GameRecordScheduleUpdateRequest()
         {
             GameRecordScheduleId = request.GameRecordScheduleId,
             Config = request.Config

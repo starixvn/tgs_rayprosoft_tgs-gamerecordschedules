@@ -41,7 +41,7 @@ public class GameRecordScheduleRepositoryUnitTest
             fakerSerialNumberGenerator,
             fakerSystemClock);
 
-        _ = await repository.AddAsync(data).ConfigureAwait(false);
+        _ = await repository.AddAsync(data);
 
         var document = new GameRecordSchedule()
         {
@@ -57,9 +57,10 @@ public class GameRecordScheduleRepositoryUnitTest
             UpdatedOn = dateTime
         };
 
-        _ = fakerMongoDatabase.Received(1)
-              .GetCollection<GameRecordSchedule>(Arg.Is($"game_record_schedules"))
-              .InsertOneAsync(Arg.Is(document));
+        _ = fakerMongoDatabase
+            .Received(1)
+            .GetCollection<GameRecordSchedule>(Arg.Is($"game_record_schedules"))
+            .InsertOneAsync(Arg.Is(document));
     }
 
     [Fact]
@@ -79,11 +80,12 @@ public class GameRecordScheduleRepositoryUnitTest
         var builder = Builders<GameRecordSchedule>.Filter;
         var filter = builder.Eq(x => x.GameRecordScheduleId, gameRecordScheduleId);
 
-        _ = await repository.GetAsync(gameRecordScheduleId).ConfigureAwait(false);
+        _ = await repository.GetAsync(gameRecordScheduleId);
 
-        _ = fakerMongoDatabase.Received(1)
-              .GetCollection<GameRecordSchedule>(Arg.Is($"game_record_schedules"))
-              .FindAsync(filter);
+        _ = fakerMongoDatabase
+            .Received(1)
+            .GetCollection<GameRecordSchedule>(Arg.Is($"game_record_schedules"))
+            .FindAsync(filter);
     }
 
     [Fact]
@@ -109,11 +111,12 @@ public class GameRecordScheduleRepositoryUnitTest
             fakerSerialNumberGenerator,
             fakerSystemClock);
 
-        _ = await repository.GetGameRecordScheduleIdAsync(gameProviderCode, brandCode, gameProviderAgentId, currencyCode).ConfigureAwait(false);
+        _ = await repository.GetGameRecordScheduleIdAsync(gameProviderCode, brandCode, gameProviderAgentId, currencyCode);
 
-        _ = fakerMongoDatabase.Received(1)
-              .GetCollection<GameRecordSchedule>(Arg.Is($"game_record_schedules"))
-              .FindAsync(filter);
+        _ = fakerMongoDatabase
+            .Received(1)
+            .GetCollection<GameRecordSchedule>(Arg.Is($"game_record_schedules"))
+            .FindAsync(filter);
     }
 
     [Fact]
@@ -142,10 +145,11 @@ public class GameRecordScheduleRepositoryUnitTest
             fakerSerialNumberGenerator,
             fakerSystemClock);
 
-        await repository.UpdateAsync(data).ConfigureAwait(false);
+        await repository.UpdateAsync(data);
 
-        _ = fakerMongoDatabase.Received(1)
-              .GetCollection<GameRecordSchedule>(Arg.Is($"game_record_schedules"))
-              .UpdateOneAsync(filter, update);
+        _ = fakerMongoDatabase
+            .Received(1)
+            .GetCollection<GameRecordSchedule>(Arg.Is($"game_record_schedules"))
+            .UpdateOneAsync(filter, update);
     }
 }

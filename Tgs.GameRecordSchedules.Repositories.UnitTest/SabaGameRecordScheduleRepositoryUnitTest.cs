@@ -21,15 +21,15 @@ public class SabaGameRecordScheduleRepositoryUnitTest
             fakerMongoDatabase,
             fakerSystemClock);
 
-        _ = await repository.GetAsync(operatorId).ConfigureAwait(false);
+        _ = await repository.GetAsync(operatorId);
 
         var filter = Builders<SabaGameRecordSchedule>.Filter.Eq(x => x.OperatorId, operatorId);
 
-        _ = fakerMongoDatabase.Received(1)
+        _ = fakerMongoDatabase
+            .Received(1)
             .GetCollection<SabaGameRecordSchedule>(Arg.Is($"saba_game_record_schedules"))
             .FindAsync<SabaGameRecordSchedule>(
-                filter: Arg.Is(filter))
-            .ConfigureAwait(false);
+            filter: Arg.Is(filter));
     }
 
     [Fact]
@@ -47,11 +47,9 @@ public class SabaGameRecordScheduleRepositoryUnitTest
             fakerMongoDatabase,
             fakerSystemClock);
 
-        await repository
-            .MergeAsync(
-                operatorId,
-                versionKey)
-            .ConfigureAwait(false);
+        await repository.MergeAsync(
+            operatorId: operatorId,
+            versionKey: versionKey);
 
         var filter = Builders<SabaGameRecordSchedule>.Filter.Eq(x => x.OperatorId, operatorId);
 
@@ -65,11 +63,10 @@ public class SabaGameRecordScheduleRepositoryUnitTest
         };
 
         _ = fakerMongoDatabase.Received(1)
-              .GetCollection<SabaGameRecordSchedule>(Arg.Is($"saba_game_record_schedules"))
-               .UpdateOneAsync(
-                    filter: Arg.Is(filter),
-                    update: Arg.Is(update),
-                    options: Arg.Is(options))
-             .ConfigureAwait(false);
+            .GetCollection<SabaGameRecordSchedule>(Arg.Is($"saba_game_record_schedules"))
+            .UpdateOneAsync(
+            filter: Arg.Is(filter),
+            update: Arg.Is(update),
+            options: Arg.Is(options));
     }
 }
