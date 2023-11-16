@@ -5,7 +5,7 @@ using Tgs.GameRecordSchedules.Repositories.Models;
 
 namespace Tgs.GameRecordSchedules.Repositories;
 
-internal class SabaGameRecordScheduleRepository: ISabaGameRecordScheduleRepository
+internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleRepository
 {
     private readonly IMongoDatabase _database;
     private readonly ISystemClock _systemClock;

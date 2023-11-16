@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Internal;
+﻿using Tgs.GameRecordSchedules.Core;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

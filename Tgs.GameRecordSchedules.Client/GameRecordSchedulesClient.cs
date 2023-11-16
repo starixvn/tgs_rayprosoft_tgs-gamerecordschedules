@@ -5,6 +5,7 @@ namespace Tgs.GameRecordSchedules.Client;
 internal class GameRecordSchedulesClient : IGameRecordSchedulesClient
 {
     private readonly GameRecordSchedulesService.GameRecordSchedulesServiceClient _client;
+
     public GameRecordSchedulesClient(GameRecordSchedulesService.GameRecordSchedulesServiceClient client)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
