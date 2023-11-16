@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>729fc1cb-af7e-4e61-b966-dc7b149f6b42</UserSecretsId>
@@ -21,7 +21,7 @@
 		<PackageReference Include="Grpc.AspNetCore" Version="2.59.0" />
 		<PackageReference Include="MongoDB.Driver" Version="2.22.0" />
 		<PackageReference Include="FluentdForward.OpenTelemetry.MessagePack" Version="0.3.1" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
 		<PackageReference Include="OpenTelemetry" Version="1.6.0" />
 		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.6.0" />
 		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.6.0" />
