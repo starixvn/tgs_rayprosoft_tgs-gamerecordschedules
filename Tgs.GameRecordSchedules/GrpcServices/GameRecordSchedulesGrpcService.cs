@@ -5,9 +5,14 @@ using Tgs.GameRecordSchedules.Protos;
 
 namespace Tgs.GameRecordSchedules.GrpcServices;
 
-public class GameRecordSchedulesGrpcService(IMediator mediator) : GameRecordSchedulesService.GameRecordSchedulesServiceBase
+public class GameRecordSchedulesGrpcService : GameRecordSchedulesService.GameRecordSchedulesServiceBase
 {
-    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    private readonly IMediator _mediator;
+
+    public GameRecordSchedulesGrpcService(IMediator mediator)
+    {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
 
     public override async Task<GameRecordScheduleAddReply> GameRecordScheduleAdd(GameRecordScheduleAddRequest request, ServerCallContext context)
     {

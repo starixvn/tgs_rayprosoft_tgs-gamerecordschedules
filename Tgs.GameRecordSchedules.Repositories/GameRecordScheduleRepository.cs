@@ -8,14 +8,21 @@ using ISystemClock = Tgs.GameRecordSchedules.Core.ISystemClock;
 
 namespace Tgs.GameRecordSchedules.Repositories;
 
-internal class GameRecordScheduleRepository(
-    IMongoDatabase database,
-    ISerialNumberGenerator serialNumberGenerator,
-    ISystemClock systemClock) : IGameRecordScheduleRepository
+internal class GameRecordScheduleRepository : IGameRecordScheduleRepository
 {
-    private readonly IMongoDatabase _database = database ?? throw new ArgumentNullException(nameof(database));
-    private readonly ISerialNumberGenerator _serialNumberGenerator = serialNumberGenerator ?? throw new ArgumentNullException(nameof(serialNumberGenerator));
-    private readonly ISystemClock _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
+    private readonly IMongoDatabase _database;
+    private readonly ISerialNumberGenerator _serialNumberGenerator;
+    private readonly ISystemClock _systemClock;
+
+    public GameRecordScheduleRepository(
+        IMongoDatabase database,
+        ISerialNumberGenerator serialNumberGenerator,
+        ISystemClock systemClock)
+    {
+        _database = database ?? throw new ArgumentNullException(nameof(database));
+        _serialNumberGenerator = serialNumberGenerator ?? throw new ArgumentNullException(nameof(serialNumberGenerator));
+        _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
+    }
 
     public async ValueTask<Guid> AddAsync(
         GameRecordScheduleAdd data,

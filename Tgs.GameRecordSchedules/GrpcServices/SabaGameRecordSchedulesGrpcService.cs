@@ -4,9 +4,14 @@ using Tgs.GameRecordSchedules.Protos;
 
 namespace Tgs.GameRecordSchedules.GrpcServices;
 
-public class SabaGameRecordSchedulesGrpcService(ISabaGameRecordScheduleRepository repository) : SabaGameRecordSchedulesService.SabaGameRecordSchedulesServiceBase
+public class SabaGameRecordSchedulesGrpcService : SabaGameRecordSchedulesService.SabaGameRecordSchedulesServiceBase
 {
-    private readonly ISabaGameRecordScheduleRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    private readonly ISabaGameRecordScheduleRepository _repository;
+
+    public SabaGameRecordSchedulesGrpcService(ISabaGameRecordScheduleRepository repository)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    }
 
     public override async Task<GetReply> Get(GetRequest request, ServerCallContext context)
     {

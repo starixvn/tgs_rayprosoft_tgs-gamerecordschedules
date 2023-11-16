@@ -4,12 +4,18 @@ using Microsoft.Extensions.Logging;
 
 namespace Tgs.GameRecordSchedules.Client;
 
-internal class LoggingInterceptor(
-    ILogger<LoggingInterceptor> logger,
-    DiagnosticsInterceptorOptions options) : Interceptor
+internal class LoggingInterceptor : Interceptor
 {
-    private readonly ILogger<LoggingInterceptor> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    private readonly DiagnosticsInterceptorOptions _options = options ?? throw new ArgumentNullException(nameof(options));
+    private readonly ILogger<LoggingInterceptor> _logger;
+    private readonly DiagnosticsInterceptorOptions _options;
+
+    public LoggingInterceptor(
+            ILogger<LoggingInterceptor> logger,
+            DiagnosticsInterceptorOptions options)
+    {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _options = options ?? throw new ArgumentNullException(nameof(options));
+    }
 
     public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(TRequest request, ClientInterceptorContext<TRequest, TResponse> context, AsyncUnaryCallContinuation<TRequest, TResponse> continuation)
     {

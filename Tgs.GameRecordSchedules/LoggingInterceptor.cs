@@ -3,12 +3,18 @@ using Grpc.Core.Interceptors;
 
 namespace Tgs.GameRecordSchedules;
 
-internal class LoggingInterceptor(
-    ILogger<LoggingInterceptor> logger,
-    DiagnosticsInterceptorOptions options) : Interceptor
+internal class LoggingInterceptor : Interceptor
 {
-    private readonly ILogger _logger = logger;
-    private readonly DiagnosticsInterceptorOptions _options = options ?? throw new ArgumentNullException(nameof(options));
+    private readonly ILogger<LoggingInterceptor> _logger;
+    private readonly DiagnosticsInterceptorOptions _options;
+
+    public LoggingInterceptor(
+        ILogger<LoggingInterceptor> logger,
+        DiagnosticsInterceptorOptions options)
+    {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _options = options ?? throw new ArgumentNullException(nameof(options));
+    }
 
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(
         TRequest request,

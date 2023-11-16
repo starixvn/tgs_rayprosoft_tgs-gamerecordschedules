@@ -5,12 +5,18 @@ using Tgs.GameRecordSchedules.Repositories.Models;
 
 namespace Tgs.GameRecordSchedules.Repositories;
 
-internal class SabaGameRecordScheduleRepository(
-    IMongoDatabase database,
-    ISystemClock systemClock) : ISabaGameRecordScheduleRepository
+internal class SabaGameRecordScheduleRepository: ISabaGameRecordScheduleRepository
 {
-    private readonly IMongoDatabase _database = database ?? throw new ArgumentNullException(nameof(database));
-    private readonly ISystemClock _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
+    private readonly IMongoDatabase _database;
+    private readonly ISystemClock _systemClock;
+
+    public SabaGameRecordScheduleRepository(
+        IMongoDatabase database,
+        ISystemClock systemClock)
+    {
+        _database = database ?? throw new ArgumentNullException(nameof(database));
+        _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
+    }
 
     public async ValueTask<long> GetAsync(
         string operatorId,
