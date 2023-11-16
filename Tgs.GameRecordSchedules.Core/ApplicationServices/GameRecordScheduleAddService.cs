@@ -3,14 +3,9 @@ using Tgs.GameRecordSchedules.Core.Models;
 
 namespace Tgs.GameRecordSchedules.Core.ApplicationServices;
 
-internal class GameRecordScheduleAddService : IRequestHandler<GameRecordScheduleAddRequest, Guid>
+internal class GameRecordScheduleAddService(IGameRecordScheduleRepository gameRecordSchedule) : IRequestHandler<GameRecordScheduleAddRequest, Guid>
 {
-    private readonly IGameRecordScheduleRepository _gameRecordSchedule;
-
-    public GameRecordScheduleAddService(IGameRecordScheduleRepository gameRecordSchedule)
-    {
-        _gameRecordSchedule = gameRecordSchedule ?? throw new ArgumentNullException(nameof(gameRecordSchedule));
-    }
+    private readonly IGameRecordScheduleRepository _gameRecordSchedule = gameRecordSchedule ?? throw new ArgumentNullException(nameof(gameRecordSchedule));
 
     public async Task<Guid> Handle(GameRecordScheduleAddRequest request, CancellationToken cancellationToken)
     {

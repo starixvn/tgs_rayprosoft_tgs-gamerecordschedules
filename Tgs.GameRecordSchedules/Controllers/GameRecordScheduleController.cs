@@ -7,14 +7,9 @@ namespace Tgs.GameRecordSchedules.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class GameRecordScheduleController : ControllerBase
+public class GameRecordScheduleController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public GameRecordScheduleController(IMediator mediator)
-    {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     [HttpPost]
     public async ValueTask<Guid?> AddAsync([FromBody] GameRecordScheduleAddViewModel model)

@@ -2,14 +2,9 @@
 
 namespace Tgs.GameRecordSchedules.Client;
 
-internal class GameRecordSchedulesClient : IGameRecordSchedulesClient
+internal class GameRecordSchedulesClient(GameRecordSchedulesService.GameRecordSchedulesServiceClient client) : IGameRecordSchedulesClient
 {
-    private readonly GameRecordSchedulesService.GameRecordSchedulesServiceClient _client;
-
-    public GameRecordSchedulesClient(GameRecordSchedulesService.GameRecordSchedulesServiceClient client)
-    {
-        _client = client ?? throw new ArgumentNullException(nameof(client));
-    }
+    private readonly GameRecordSchedulesService.GameRecordSchedulesServiceClient _client = client ?? throw new ArgumentNullException(nameof(client));
 
     public async ValueTask<GameRecordScheduleAddReply> GameRecordScheduleAddAsync(GameRecordScheduleAddRequest request, CancellationToken cancellationToken = default)
         => await _client.GameRecordScheduleAddAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);

@@ -2,14 +2,9 @@
 
 namespace Tgs.GameRecordSchedules.Core.ApplicationServices;
 
-internal class GameRecordScheduleGetGameProviderService : IRequestHandler<GameRecordScheduleGetGameProviderRequest, GameRecordScheduleResponse?>
+internal class GameRecordScheduleGetGameProviderService(IGameRecordScheduleRepository gameRecordSchedule) : IRequestHandler<GameRecordScheduleGetGameProviderRequest, GameRecordScheduleResponse?>
 {
-    private readonly IGameRecordScheduleRepository _gameRecordSchedule;
-
-    public GameRecordScheduleGetGameProviderService(IGameRecordScheduleRepository gameRecordSchedule)
-    {
-        _gameRecordSchedule = gameRecordSchedule ?? throw new ArgumentNullException(nameof(gameRecordSchedule));
-    }
+    private readonly IGameRecordScheduleRepository _gameRecordSchedule = gameRecordSchedule ?? throw new ArgumentNullException(nameof(gameRecordSchedule));
 
     public async Task<GameRecordScheduleResponse?> Handle(GameRecordScheduleGetGameProviderRequest request, CancellationToken cancellationToken)
     {

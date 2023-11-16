@@ -5,18 +5,12 @@ using Tgs.GameRecordSchedules.Repositories.Models;
 
 namespace Tgs.GameRecordSchedules.Repositories;
 
-internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleRepository
+internal class SabaGameRecordScheduleRepository(
+    IMongoDatabase database,
+    ISystemClock systemClock) : ISabaGameRecordScheduleRepository
 {
-    private readonly IMongoDatabase _database;
-    private readonly ISystemClock _systemClock;
-
-    public SabaGameRecordScheduleRepository(
-        IMongoDatabase database,
-        ISystemClock systemClock)
-    {
-        _database = database ?? throw new ArgumentNullException(nameof(database));
-        _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
-    }
+    private readonly IMongoDatabase _database = database ?? throw new ArgumentNullException(nameof(database));
+    private readonly ISystemClock _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
 
     public async ValueTask<long> GetAsync(
         string operatorId,
@@ -43,19 +37,19 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
     {
         var collection = GetCollection();
 
-        await OperatorIdIndexAsync(
+        _ = await OperatorIdIndexAsync(
             collection: collection,
             cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
-        await UpdatedOn_IndexAsync(
-            collection: collection,
-            cancellationToken: cancellationToken)
-            .ConfigureAwait(false);
+        _ = await UpdatedOn_IndexAsync(
+              collection: collection,
+              cancellationToken: cancellationToken)
+              .ConfigureAwait(false);
     }
 
     public async ValueTask MergeAsync(
-            string operatorId,
+        string operatorId,
         long versionKey,
         CancellationToken cancellationToken = default)
     {
@@ -80,7 +74,7 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
              .ConfigureAwait(false);
     }
 
-    private static Task OperatorIdIndexAsync(
+    private static Task<string> OperatorIdIndexAsync(
         IMongoCollection<SabaGameRecordSchedule> collection,
         CancellationToken cancellationToken = default)
     {
@@ -99,7 +93,7 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
             cancellationToken: cancellationToken);
     }
 
-    private static Task UpdatedOn_IndexAsync(
+    private static Task<string> UpdatedOn_IndexAsync(
         IMongoCollection<SabaGameRecordSchedule> collection,
         CancellationToken cancellationToken = default)
     {

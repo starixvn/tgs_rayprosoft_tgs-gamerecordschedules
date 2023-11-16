@@ -8,6 +8,8 @@ using OpenTelemetry.Trace;
 using Tgs.GameRecordSchedules;
 using Tgs.GameRecordSchedules.GrpcServices;
 
+var filterInstrumentations = new[] { "html", "ico", "png", "jpg" };
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration
@@ -95,7 +97,7 @@ builder.Services
             && !httpContext.Request.Path.StartsWithSegments("/profiler/")
             && !httpContext.Request.Path.StartsWithSegments("/hangfire")
             && !httpContext.Request.Path.StartsWithSegments("/metrics")
-            && !new[] { "html", "ico", "png", "jpg" }.Any(
+            && !filterInstrumentations.Any(
                 ext => httpContext.Request.Path.Value.EndsWith($".{ext}")))
     .AddInterceptionService()
     .AddServiceUtiltiyInterceptors();
