@@ -80,7 +80,13 @@ push-docker-image:
     untracked: true   
     policy: pull
   script:
-    - docker build -t "$ImageName:$Tag" --build-arg [BuildConfiguration]=$BuildConfiguration -f "Tgs.GameRecordSchedules/Dockerfile" . --no-cache
+    #- dotnet build "Tgs.GameRecordSchedules/Tgs.GameRecordSchedules.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:$Tag" --no-restore
+    - dotnet publish "Tgs.GameRecordSchedules" 
+       --os linux --arch x64
+       /t:PublishContainer
+       -c $BuildConfiguration
+       /p:ContainerRepository=$ImageName
+       /p:ContainerImageTag=$Tag
     - docker push $ImageName:$Tag
 
 push-k8s-template:
@@ -117,6 +123,7 @@ deploy-dev:
       artifacts: true
   only:
     - main
+  when: manual
   before_script:
     - export KUBECONFIG=$KubeConfig_Raypro_dev
   script:
@@ -133,11 +140,7 @@ deploy-dev:
         "nodeSelector": $node_selector,
         "tolerations": [$dedicated],
         "resources": $resources,
-        "autoscaling": $autoscaling,
-        "restart": {
-            "enabled": true,
-            "schedule": "15 0 * * *"
-        }
+        "autoscaling": $autoscaling
       }
       EOF
     - |
@@ -150,11 +153,7 @@ deploy-dev:
         "nodeSelector": $node_selector,
         "tolerations": [$dedicated],
         "resources": $resources,
-        "autoscaling": $autoscaling,
-        "restart": {
-            "enabled": true,
-            "schedule": "15 0 * * *"
-        }
+        "autoscaling": $autoscaling
       }
       EOF
 
@@ -166,7 +165,7 @@ deploy-staging:
     name: staging
   stage: deploy-staging
   needs:
-    - deploy-dev
+    - push-docker-image
     - job: push-k8s-template
       artifacts: true
   only:
@@ -188,11 +187,7 @@ deploy-staging:
         "nodeSelector": $node_selector,
         "tolerations": [$dedicated],
         "resources": $resources,
-        "autoscaling": $autoscaling,
-        "restart": {
-            "enabled": true,
-            "schedule": "15 0 * * *"
-        }
+        "autoscaling": $autoscaling
       }
       EOF
     - |
@@ -205,11 +200,7 @@ deploy-staging:
         "nodeSelector": $node_selector,
         "tolerations": [$dedicated],
         "resources": $resources,
-        "autoscaling": $autoscaling,
-        "restart": {
-            "enabled": true,
-            "schedule": "15 0 * * *"
-        }
+        "autoscaling": $autoscaling
       }
       EOF
 
@@ -221,7 +212,7 @@ deploy-prod:
     name: prod
   stage: deploy-prod
   needs:
-    - deploy-staging
+    - push-docker-image
     - job: push-k8s-template
       artifacts: true
   only:
@@ -243,11 +234,7 @@ deploy-prod:
         "nodeSelector": $node_selector,
         "tolerations": [$dedicated],
         "resources": $resources,
-        "autoscaling": $autoscaling,
-        "restart": {
-            "enabled": true,
-            "schedule": "15 0 * * *"
-        }
+        "autoscaling": $autoscaling
       }
       EOF
     - |
@@ -260,10 +247,6 @@ deploy-prod:
         "nodeSelector": $node_selector,
         "tolerations": [$dedicated],
         "resources": $resources,
-        "autoscaling": $autoscaling,
-        "restart": {
-            "enabled": true,
-            "schedule": "15 0 * * *"
-        }
+        "autoscaling": $autoscaling
       }
       EOF

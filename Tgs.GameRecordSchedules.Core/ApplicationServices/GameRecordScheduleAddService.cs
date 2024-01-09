@@ -3,19 +3,12 @@ using Tgs.GameRecordSchedules.Core.Models;
 
 namespace Tgs.GameRecordSchedules.Core.ApplicationServices;
 
-internal class GameRecordScheduleAddService : IRequestHandler<GameRecordScheduleAddRequest, Guid>
+internal class GameRecordScheduleAddService(
+    IGameRecordScheduleRepository gameRecordSchedule) : IRequestHandler<GameRecordScheduleAddRequest, Guid>
 {
-    private readonly IGameRecordScheduleRepository _gameRecordSchedule;
-
-    public GameRecordScheduleAddService(
-        IGameRecordScheduleRepository gameRecordSchedule)
-    {
-        _gameRecordSchedule = gameRecordSchedule ?? throw new ArgumentNullException(nameof(gameRecordSchedule));
-    }
-
     public async Task<Guid> Handle(GameRecordScheduleAddRequest request, CancellationToken cancellationToken)
     {
-        var gameRecordScheduleId = await _gameRecordSchedule.GetGameRecordScheduleIdAsync(request.GameProviderCode, request.BrandCode, request.GameProviderAgentId, request.CurrencyCode, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var gameRecordScheduleId = await gameRecordSchedule.GetGameRecordScheduleIdAsync(request.GameProviderCode, request.BrandCode, request.GameProviderAgentId, request.CurrencyCode, cancellationToken: cancellationToken).ConfigureAwait(false);
 
         if (gameRecordScheduleId.HasValue)
         {
@@ -32,6 +25,6 @@ internal class GameRecordScheduleAddService : IRequestHandler<GameRecordSchedule
             Config = request.Config
         };
 
-        return await _gameRecordSchedule.AddAsync(data, cancellationToken).ConfigureAwait(false);
+        return await gameRecordSchedule.AddAsync(data, cancellationToken).ConfigureAwait(false);
     }
 }

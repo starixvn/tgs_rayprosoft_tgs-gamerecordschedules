@@ -5,18 +5,11 @@ using Tgs.GameRecordSchedules.Protos;
 
 namespace Tgs.GameRecordSchedules.GrpcServices;
 
-public class GameRecordSchedulesGrpcService : GameRecordSchedulesService.GameRecordSchedulesServiceBase
+public class GameRecordSchedulesGrpcService(IMediator mediator) : GameRecordSchedulesService.GameRecordSchedulesServiceBase
 {
-    private readonly IMediator _mediator;
-
-    public GameRecordSchedulesGrpcService(IMediator mediator)
-    {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
-
     public override async Task<GameRecordScheduleAddReply> GameRecordScheduleAdd(GameRecordScheduleAddRequest request, ServerCallContext context)
     {
-        var gameRecordScheduleId = await _mediator.Send(new Core.ApplicationServices.GameRecordScheduleAddRequest()
+        var gameRecordScheduleId = await mediator.Send(new Core.ApplicationServices.GameRecordScheduleAddRequest()
         {
             GameProviderId = request.GameProviderId,
             GameProviderCode = request.GameProviderCode,
@@ -34,7 +27,7 @@ public class GameRecordSchedulesGrpcService : GameRecordSchedulesService.GameRec
 
     public override async Task<GameRecordScheduleGetReply> GameRecordScheduleGet(GameRecordScheduleGetRequest request, ServerCallContext context)
     {
-        var response = await _mediator.Send(new Core.ApplicationServices.GameRecordScheduleGetGameProviderRequest()
+        var response = await mediator.Send(new Core.ApplicationServices.GameRecordScheduleGetGameProviderRequest()
         {
             GameProviderCode = request.GameProviderCode.ToUpper(),
             BrandCode = request.BrandCode,
@@ -63,7 +56,7 @@ public class GameRecordSchedulesGrpcService : GameRecordSchedulesService.GameRec
 
     public override async Task<GameRecordScheduleUpdateReply> GameRecordScheduleUpdate(GameRecordScheduleUpdateRequest request, ServerCallContext context)
     {
-        _ = await _mediator.Send(new Core.ApplicationServices.GameRecordScheduleUpdateRequest()
+        _ = await mediator.Send(new Core.ApplicationServices.GameRecordScheduleUpdateRequest()
         {
             GameRecordScheduleId = request.GameRecordScheduleId,
             Config = request.Config

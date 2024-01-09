@@ -8,29 +8,18 @@ using ISystemClock = Tgs.GameRecordSchedules.Core.ISystemClock;
 
 namespace Tgs.GameRecordSchedules.Repositories;
 
-internal class GameRecordScheduleRepository : IGameRecordScheduleRepository
+internal class GameRecordScheduleRepository(
+    IMongoDatabase database,
+    ISerialNumberGenerator serialNumberGenerator,
+    ISystemClock systemClock) : IGameRecordScheduleRepository
 {
-    private readonly IMongoDatabase _database;
-    private readonly ISerialNumberGenerator _serialNumberGenerator;
-    private readonly ISystemClock _systemClock;
-
-    public GameRecordScheduleRepository(
-        IMongoDatabase database,
-        ISerialNumberGenerator serialNumberGenerator,
-        ISystemClock systemClock)
-    {
-        _database = database ?? throw new ArgumentNullException(nameof(database));
-        _serialNumberGenerator = serialNumberGenerator ?? throw new ArgumentNullException(nameof(serialNumberGenerator));
-        _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
-    }
-
     public async ValueTask<Guid> AddAsync(
         GameRecordScheduleAdd data,
         CancellationToken cancellationToken = default)
     {
         var collection = GetCollection();
-        var gameRecordScheduleId = await _serialNumberGenerator.GenerateAsync(cancellationToken).ConfigureAwait(false);
-        var dateTime = _systemClock.CurrentTime.DateTime;
+        var gameRecordScheduleId = await serialNumberGenerator.GenerateAsync(cancellationToken).ConfigureAwait(false);
+        var dateTime = systemClock.CurrentTime.DateTime;
         var document = new GameRecordSchedule()
         {
             GameRecordScheduleId = gameRecordScheduleId,
@@ -135,7 +124,7 @@ internal class GameRecordScheduleRepository : IGameRecordScheduleRepository
         CancellationToken cancellationToken = default)
     {
         var collection = GetCollection();
-        var dateTime = _systemClock.CurrentTime.DateTime;
+        var dateTime = systemClock.CurrentTime.DateTime;
         var builder = Builders<GameRecordSchedule>.Filter;
         var filter = builder.Eq(x => x.GameRecordScheduleId, data.GameRecordScheduleId);
         var update = Builders<GameRecordSchedule>.Update
@@ -187,5 +176,5 @@ internal class GameRecordScheduleRepository : IGameRecordScheduleRepository
     }
 
     private IMongoCollection<GameRecordSchedule> GetCollection()
-            => _database.GetCollection<GameRecordSchedule>($"game_record_schedules");
+            => database.GetCollection<GameRecordSchedule>($"game_record_schedules");
 }

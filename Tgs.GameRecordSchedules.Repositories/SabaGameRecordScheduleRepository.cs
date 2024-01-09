@@ -5,19 +5,10 @@ using Tgs.GameRecordSchedules.Repositories.Models;
 
 namespace Tgs.GameRecordSchedules.Repositories;
 
-internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleRepository
+internal class SabaGameRecordScheduleRepository(
+    IMongoDatabase database,
+    ISystemClock systemClock) : ISabaGameRecordScheduleRepository
 {
-    private readonly IMongoDatabase _database;
-    private readonly ISystemClock _systemClock;
-
-    public SabaGameRecordScheduleRepository(
-        IMongoDatabase database,
-        ISystemClock systemClock)
-    {
-        _database = database ?? throw new ArgumentNullException(nameof(database));
-        _systemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
-    }
-
     public async ValueTask<long> GetAsync(
         string operatorId,
         CancellationToken cancellationToken = default)
@@ -60,7 +51,7 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
         CancellationToken cancellationToken = default)
     {
         var collection = GetCollection();
-        var dateTime = _systemClock.CurrentTime.DateTime;
+        var dateTime = systemClock.CurrentTime.DateTime;
         var filter = Builders<SabaGameRecordSchedule>.Filter.Eq(x => x.OperatorId, operatorId);
         var update = Builders<SabaGameRecordSchedule>.Update
             .Set(s => s.OperatorId, operatorId)
@@ -119,5 +110,5 @@ internal class SabaGameRecordScheduleRepository : ISabaGameRecordScheduleReposit
     }
 
     private IMongoCollection<SabaGameRecordSchedule> GetCollection()
-            => _database.GetCollection<SabaGameRecordSchedule>($"saba_game_record_schedules".ToLower());
+            => database.GetCollection<SabaGameRecordSchedule>($"saba_game_record_schedules".ToLower());
 }

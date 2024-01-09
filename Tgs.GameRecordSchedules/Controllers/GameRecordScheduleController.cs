@@ -7,15 +7,8 @@ namespace Tgs.GameRecordSchedules.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class GameRecordScheduleController : ControllerBase
+public class GameRecordScheduleController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public GameRecordScheduleController(IMediator mediator)
-    {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
-
     [HttpPost]
     public async ValueTask<Guid?> AddAsync([FromBody] GameRecordScheduleAddViewModel model)
     {
@@ -28,7 +21,7 @@ public class GameRecordScheduleController : ControllerBase
             CurrencyCode = model.CurrencyCode,
             Config = model.Config
         };
-        return await _mediator.Send(
+        return await mediator.Send(
               request: request,
               cancellationToken: HttpContext.RequestAborted)
               .ConfigureAwait(false);
@@ -42,7 +35,7 @@ public class GameRecordScheduleController : ControllerBase
         [FromQuery] string currencyCode
         )
     {
-        var response = await _mediator.Send(new GameRecordScheduleGetGameProviderRequest()
+        var response = await mediator.Send(new GameRecordScheduleGetGameProviderRequest()
         {
             GameProviderCode = gameProviderCode.ToUpper(),
             BrandCode = brandCode,
@@ -76,7 +69,7 @@ public class GameRecordScheduleController : ControllerBase
             GameRecordScheduleId = gameRecordScheduleId,
             Config = model.Config
         };
-        _ = await _mediator.Send(
+        _ = await mediator.Send(
             request: request,
             cancellationToken: HttpContext.RequestAborted)
             .ConfigureAwait(false);
