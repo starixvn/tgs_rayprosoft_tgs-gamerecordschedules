@@ -9,69 +9,69 @@ namespace Tgs.GameRecordSchedules.Controllers;
 [ApiController]
 public class GameRecordScheduleController(IMediator mediator) : ControllerBase
 {
-    [HttpPost]
-    public async ValueTask<Guid?> AddAsync([FromBody] GameRecordScheduleAddViewModel model)
-    {
-        var request = new GameRecordScheduleAddRequest
-        {
-            GameProviderId = model.GameProviderId,
-            GameProviderCode = model.GameProviderCode,
-            GameProviderAgentId = model.GameProviderAgentId,
-            BrandCode = model.BrandCode,
-            CurrencyCode = model.CurrencyCode,
-            Config = model.Config
-        };
-        return await mediator.Send(
-              request: request,
-              cancellationToken: HttpContext.RequestAborted)
-              .ConfigureAwait(false);
-    }
+	[HttpPost]
+	public async ValueTask<Guid?> AddAsync([FromBody] GameRecordScheduleAddViewModel model)
+	{
+		var request = new GameRecordScheduleAddRequest
+		{
+			GameProviderId = model.GameProviderId,
+			GameProviderCode = model.GameProviderCode,
+			GameProviderAgentId = model.GameProviderAgentId,
+			BrandCode = model.BrandCode,
+			CurrencyCode = model.CurrencyCode,
+			Config = model.Config
+		};
+		return await mediator.Send(
+			  request: request,
+			  cancellationToken: HttpContext.RequestAborted)
+			  .ConfigureAwait(false);
+	}
 
-    [HttpGet("{gameProviderCode}")]
-    public async ValueTask<GameRecordScheduleGetViewModel?> GetAsync(
-        string gameProviderCode,
-        [FromQuery] string brandCode,
-        [FromQuery] string gameProviderAgentId,
-        [FromQuery] string currencyCode
-        )
-    {
-        var response = await mediator.Send(new GameRecordScheduleGetGameProviderRequest()
-        {
-            GameProviderCode = gameProviderCode.ToUpper(),
-            BrandCode = brandCode,
-            GameProviderAgentId = gameProviderAgentId,
-            CurrencyCode = currencyCode
-        }).ConfigureAwait(false);
+	[HttpGet("{gameProviderCode}")]
+	public async ValueTask<GameRecordScheduleGetViewModel?> GetAsync(
+		string gameProviderCode,
+		[FromQuery] string brandCode,
+		[FromQuery] string gameProviderAgentId,
+		[FromQuery] string currencyCode
+		)
+	{
+		var response = await mediator.Send(new GameRecordScheduleGetGameProviderRequest()
+		{
+			GameProviderCode = gameProviderCode.ToUpper(),
+			BrandCode = brandCode,
+			GameProviderAgentId = gameProviderAgentId,
+			CurrencyCode = currencyCode
+		}).ConfigureAwait(false);
 
-        return response is not null
-            ? new GameRecordScheduleGetViewModel()
-            {
-                GameRecordScheduleId = response.GameRecordScheduleId,
-                GameProviderId = response.GameProviderId,
-                GameProviderCode = response.GameProviderCode,
-                BrandCode = response.BrandCode,
-                GameProviderAgentId = response.GameProviderAgentId,
-                CurrencyCode = response.CurrencyCode,
-                Status = (Protos.GameRecordScheduleStatus)response.Status,
-                Config = response.Config,
-                CreatedOn = response.CreatedOn,
-                UpdatedOn = response.UpdatedOn,
-            } : null;
-    }
+		return response is not null
+			? new GameRecordScheduleGetViewModel()
+			{
+				GameRecordScheduleId = response.GameRecordScheduleId,
+				GameProviderId = response.GameProviderId,
+				GameProviderCode = response.GameProviderCode,
+				BrandCode = response.BrandCode,
+				GameProviderAgentId = response.GameProviderAgentId,
+				CurrencyCode = response.CurrencyCode,
+				Status = (Protos.GameRecordScheduleStatus)response.Status,
+				Config = response.Config,
+				CreatedOn = response.CreatedOn,
+				UpdatedOn = response.UpdatedOn,
+			} : null;
+	}
 
-    [HttpPut("{gameRecordScheduleId:guid}")]
-    public async ValueTask UpdateAsync(
-        Guid gameRecordScheduleId,
-        [FromBody] GameRecordScheduleUpdateViewModel model)
-    {
-        var request = new GameRecordScheduleUpdateRequest()
-        {
-            GameRecordScheduleId = gameRecordScheduleId,
-            Config = model.Config
-        };
-        _ = await mediator.Send(
-            request: request,
-            cancellationToken: HttpContext.RequestAborted)
-            .ConfigureAwait(false);
-    }
+	[HttpPut("{gameRecordScheduleId:guid}")]
+	public async ValueTask UpdateAsync(
+		Guid gameRecordScheduleId,
+		[FromBody] GameRecordScheduleUpdateViewModel model)
+	{
+		var request = new GameRecordScheduleUpdateRequest()
+		{
+			GameRecordScheduleId = gameRecordScheduleId,
+			Config = model.Config
+		};
+		_ = await mediator.Send(
+			request: request,
+			cancellationToken: HttpContext.RequestAborted)
+			.ConfigureAwait(false);
+	}
 }
