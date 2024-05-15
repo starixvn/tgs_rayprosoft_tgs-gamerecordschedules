@@ -9,38 +9,38 @@ namespace Tgs.GameRecordSchedules.Core.UnitTest;
 
 public class GameRecordScheduleGetServiceUnitTest
 {
-    [Fact]
-    public async Task Normal_Process()
-    {
-        var fakerRepository = Substitute.For<IGameRecordScheduleRepository>();
+	[Fact]
+	public async Task Normal_Process()
+	{
+		var fakerRepository = Substitute.For<IGameRecordScheduleRepository>();
 
-        var gameRecordScheduleId = Guid.NewGuid();
-        var request = new GameRecordScheduleGetRequest()
-        {
-            GameRecordScheduleId = gameRecordScheduleId
-        };
+		var gameRecordScheduleId = Guid.NewGuid();
+		var request = new GameRecordScheduleGetRequest()
+		{
+			GameRecordScheduleId = gameRecordScheduleId
+		};
 
-        var gameRecordSchedule = new GameRecordScheduleGet()
-        {
-            GameRecordScheduleId = gameRecordScheduleId,
-            GameProviderId = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
-            GameProviderCode = "KY",
-            BrandCode = "Default",
-            GameProviderAgentId = "72412",
-            CurrencyCode = "CNY",
-            Config = JsonSerializer.Serialize(new { }),
-            CreatedOn = DateTime.UtcNow,
-            UpdatedOn = DateTime.UtcNow
-        };
+		var gameRecordSchedule = new GameRecordScheduleGet()
+		{
+			GameRecordScheduleId = gameRecordScheduleId,
+			GameProviderId = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+			GameProviderCode = "KY",
+			BrandCode = "Default",
+			GameProviderAgentId = "72412",
+			CurrencyCode = "CNY",
+			Config = JsonSerializer.Serialize(new { }),
+			CreatedOn = DateTime.UtcNow,
+			UpdatedOn = DateTime.UtcNow
+		};
 
-        _ = fakerRepository.GetAsync(
-            Arg.Is(gameRecordScheduleId)).Returns(gameRecordSchedule);
+		_ = fakerRepository.GetAsync(
+			Arg.Is(gameRecordScheduleId)).Returns(gameRecordSchedule);
 
-        var service = new GameRecordScheduleGetService(fakerRepository);
+		var service = new GameRecordScheduleGetService(fakerRepository);
 
-        var actual = await service.Handle(request, default);
+		var actual = await service.Handle(request, default);
 
-        Assert.NotNull(actual);
-        Assert.Equal(gameRecordScheduleId, actual.GameRecordScheduleId);
-    }
+		Assert.NotNull(actual);
+		Assert.Equal(gameRecordScheduleId, actual.GameRecordScheduleId);
+	}
 }

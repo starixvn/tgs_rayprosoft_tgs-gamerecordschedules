@@ -5,14 +5,14 @@ namespace Tgs.GameRecordSchedules;
 
 internal class MongoDBConnectionManager
 {
-    public IMongoDatabase Database { get; }
+	public IMongoDatabase Database { get; }
 
-    public MongoDBConnectionManager(
-        IOptions<MongoDBOptions> optionsAccessor)
-    {
-        var options = optionsAccessor.Value;
-        var mongoUrl = new MongoUrl(options.ConnectionString);
-        var _mongoClient = new MongoClient(mongoUrl);
-        Database = _mongoClient.GetDatabase("gameprovider");
-    }
+	public MongoDBConnectionManager(
+		IOptions<MongoDBOptions> optionsAccessor)
+	{
+		var options = optionsAccessor.Value;
+		var mongoUrl = new MongoUrl(options.ConnectionString);
+		var _mongoClient = new MongoClient(mongoUrl);
+		Database = _mongoClient.GetDatabase("gameprovider");
+	}
 }

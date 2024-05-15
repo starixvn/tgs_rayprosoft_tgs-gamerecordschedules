@@ -2,7 +2,7 @@
 
 public record GameRecordScheduleUpdate
 {
-    public Guid GameRecordScheduleId { get; set; }
+	public Guid GameRecordScheduleId { get; set; }
 
-    public string Config { get; set; } = default!;
+	public string Config { get; set; } = default!;
 }

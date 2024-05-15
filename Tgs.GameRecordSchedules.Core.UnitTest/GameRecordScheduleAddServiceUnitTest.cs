@@ -9,28 +9,28 @@ namespace Tgs.GameRecordSchedules.Core.UnitTest;
 
 public class GameRecordScheduleAddServiceUnitTest
 {
-    [Fact]
-    public async Task Normal_Process()
-    {
-        var fakerRepository = Substitute.For<IGameRecordScheduleRepository>();
+	[Fact]
+	public async Task Normal_Process()
+	{
+		var fakerRepository = Substitute.For<IGameRecordScheduleRepository>();
 
-        var data = new GameRecordScheduleAddRequest()
-        {
-            GameProviderId = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
-            GameProviderCode = "KY",
-            BrandCode = "Default",
-            GameProviderAgentId = "72412",
-            CurrencyCode = "CNY",
-            Config = JsonSerializer.Serialize(new { })
-        };
+		var data = new GameRecordScheduleAddRequest()
+		{
+			GameProviderId = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+			GameProviderCode = "KY",
+			BrandCode = "Default",
+			GameProviderAgentId = "72412",
+			CurrencyCode = "CNY",
+			Config = JsonSerializer.Serialize(new { })
+		};
 
-        var gameRecordScheduleId = Guid.NewGuid();
-        _ = fakerRepository.AddAsync(Arg.Any<GameRecordScheduleAdd>()).Returns(gameRecordScheduleId);
+		var gameRecordScheduleId = Guid.NewGuid();
+		_ = fakerRepository.AddAsync(Arg.Any<GameRecordScheduleAdd>()).Returns(gameRecordScheduleId);
 
-        var service = new GameRecordScheduleAddService(fakerRepository);
+		var service = new GameRecordScheduleAddService(fakerRepository);
 
-        var actual = await service.Handle(data, default);
+		var actual = await service.Handle(data, default);
 
-        Assert.Equal(gameRecordScheduleId, actual);
-    }
+		Assert.Equal(gameRecordScheduleId, actual);
+	}
 }
